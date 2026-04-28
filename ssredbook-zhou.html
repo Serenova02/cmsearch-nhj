@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小红书-周哥副业实战</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+            color: #1f1f1f;
+        }
+
+        /* 主容器 - 适配PC/移动端布局 */
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+            gap: 20px;
+        }
+
+        /* 左侧侧边栏 */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 16px 12px; /* 左右加内边距，增加可用宽度 */
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            width: 160px; 
+        }
+
+        .sidebar .logo {
+            width: 80px; /* PC端宽度 */
+            height: 32px; /* PC端高度，椭圆核心 */
+            background-color: #ff2442; /* 小红书官方红 */
+            border-radius: 16px; /* 高度的一半，实现完美椭圆 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            letter-spacing: 0.5px;
+            /* 响应式基础：防止溢出 */
+            flex-shrink: 0;
+        }
+
+        .sidebar .nav-list {
+            margin-top: 20px; /* 新增：与logo保持20px间距，美观大方 */
+            display: flex;
+            flex-direction: column;
+            gap: 16px; /* 导航项之间间距保留，保证纵向排版 */
+        }
+
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            color: #1f1f1f;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar .nav-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .sidebar .nav-item i {
+            font-size: 20px;
+        }
+
+        /* 切换账号按钮样式 */
+        .sidebar .switch-account-btn {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background-color: #f8f8f8;
+            border-radius: 20px;
+            color: #1f1f1f;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: calc(100% - 24px); /* 适配新的侧边栏内边距 */
+            margin-left: 12px;
+            margin-bottom: 16px;
+            white-space: nowrap; /* 新增：强制文字不换行 */
+        }
+
+        .sidebar .switch-account-btn:hover {
+            color: #1f1f1f;
+            background-color: #f0f0f0;
+        }
+
+        /* 切换账号弹窗样式 */
+        .switch-account-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            z-index: 999;
+        }
+        .switch-account-modal.active {
+            display: block;
+        }
+        .modal-mask {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 500;
+            color: #1f1f1f;
+        }
+        .switch-modal-close {
+            width: 24px; /* 从32px缩小为28px，避免超出弹窗框 */
+            height: 24px;
+            border: none;
+            background: transparent;
+            color: #8c8c8c; /* 默认灰色图标 */
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* 微调位置，彻底避免超出弹窗 */
+            position: relative;
+            top: 0;
+            right: 0;
+            transition: all 0.2s ease; /* 顺滑过渡 */
+        }
+        .switch-modal-close:hover {
+            background-color: #fef0f0; /* 浅红背景 */
+            color: #ff2442; /* 小红书官方红 */
+        }
+        .switch-account-modal .modal-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .input-item {
+            margin-bottom: 16px;
+            width: 100%;
+            display: block; /* 强制块级元素，确保换行 */
+            clear: both; /* 强制清除浮动，确保换行 */
+        }
+        .input-item label {
+            display: block;
+            font-size: 14px;
+            color: #1f1f1f;
+            margin-bottom: 8px;
+        }
+        .input-item input {
+            width: 100%;
+            height: 44px;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 0 12px;
+            font-size: 14px;
+            outline: none;
+        }
+        .input-item input:focus {
+            border-color: #ff2442;
+        }
+        .modal-footer {
+            padding: 0 20px 20px;
+        }
+        .modal-footer .login-btn {
+            width: 100%;
+            height: 48px;
+            background-color: #ff2442;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .modal-footer .login-btn:hover {
+            background-color: #e01f3d;
+        }
+
+        /* 左侧个人入口样式 */
+        .sidebar .user-entry {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            color: #1f1f1f;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar .user-entry:hover {
+            background-color: #f5f5f5;
+        }
+
+        .sidebar .user-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%; /* 圆形头像 */
+            object-fit: cover;
+            border: 1px solid #e0e0e0;
+        }
+
+        .sidebar .user-text {
+            font-size: 16px;
+            color: #1f1f1f;
+        }
+
+        /* 右侧主内容区 */
+        .main-content {
+            flex: 1;
+            padding-top: 20px;
+        }
+
+        /* 顶部搜索栏 */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            padding: 8px 0;
+            z-index: 10;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+            height: 40px;
+            background-color: #f5f5f5;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
+            color: #1f1f1f;
+        }
+
+        .search-box input::placeholder {
+            color: #8c8c8c;
+        }
+
+        .top-nav {
+            display: flex;
+            gap: 24px;
+            font-size: 14px;
+            color: #8c8c8c;
+        }
+
+        .top-nav span {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .top-nav span:hover {
+            color: #1f1f1f;
+        }
+
+        /* 用户信息区 */
+        .user-profile {
+            display: flex;
+            align-items: flex-start;
+            gap: 40px;
+            padding: 0 16px;
+            margin-bottom: 40px;
+        }
+
+        .avatar-wrapper {
+            flex-shrink: 0;
+        }
+
+        .user-avatar-big {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #e0e0e0;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .username {
+            font-size: 24px;
+            font-weight: 500;
+            color: #1f1f1f;
+        }
+
+        .follow-btn {
+            width: 90px;
+            height: 36px;
+            background-color: #ff2442;
+            color: #fff;
+            border: none;
+            border-radius: 18px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .follow-btn:hover {
+            background-color: #e01f3d;
+        }
+
+        .user-meta {
+            font-size: 14px;
+            color: #8c8c8c;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .user-signature {
+            font-size: 14px;
+            color: #1f1f1f;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 24px;
+            font-size: 14px;
+            color: #1f1f1f;
+            margin-bottom: 20px;
+        }
+
+        .user-stats span {
+            font-weight: 500;
+            margin-right: 4px;
+        }
+
+        /* 笔记标签栏 */
+        .note-tabs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            border-top: 1px solid #f5f5f5;
+            border-bottom: 1px solid #f5f5f5;
+            padding: 12px 0;
+            margin-bottom: 20px;
+        }
+
+        .note-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #1f1f1f;
+            cursor: pointer;
+            padding: 4px 16px;
+            border-bottom: 2px solid #1f1f1f;
+            transition: all 0.3s ease; /* 平滑切换激活态 */
+            cursor: pointer;
+        }
+        .note-tab.active-tab {
+            color: #1f1f1f;
+            border-bottom: 2px solid #1f1f1f;
+        }
+
+        .note-tab.unactive {
+            color: #8c8c8c;
+            border-bottom: 2px solid transparent;
+        }
+        .note-tab:hover {
+            color: #1f1f1f;
+        }
+
+        /* 笔记卡片列表 */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        /* 内容区域切换样式（平滑过渡） */
+        .notes-grid, .collection-content {
+            width: 100%;
+            padding: 0 16px;
+            transition: all 0.4s ease-in-out; /* 平滑过渡 */
+        }
+        .collection-content {
+            display: none; /* 初始隐藏 */
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+        .collection-content.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+        .notes-grid.inactive {
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+            height: 0;
+            overflow: hidden;
+        }
+
+        /* 收藏空状态样式 */
+        .collection-empty {
+            text-align: center;
+            color: #8c8c8c;
+        }
+        .empty-icon {
+            font-size: 44px; 
+            color: #8c8c8c;
+            opacity: 0.6;
+            margin-bottom: 16px;
+            display: inline-block; /* 确保居中 */
+        }
+        .empty-text {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .note-card {
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .note-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+        .note-img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 8px;
+        }
+
+        .note-title {
+            font-size: 14px;
+            color: #1f1f1f;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .note-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* 两端对齐，点赞数自动右对齐 */
+            width: 100%; /* 确保占满卡片宽度，对齐生效 */
+            color: #8c8c8c;
+        }
+        .note-author {
+            font-size: 14px; /* 调整为需要的字号，比如12px/15px等 */
+        }
+        .note-meta .like-wrap {
+            margin-left: auto; /* 点赞数容器自动右对齐 */
+        }
+        .note-meta img {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #e0e0e0;
+        }
+
+        .note-card .cover {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            background-color: #f5f5f5;
+        }
+
+        .note-card .info {
+            padding: 12px;
+        }
+
+        .note-card .title {
+            font-size: 14px;
+            color: #1f1f1f;
+            line-height: 1.5; /* 行高=21px */
+            margin-bottom: 8px;
+            height: 42px; /* 2行 × 21px = 42px，精准控制高度 */
+            overflow: hidden;
+            position: relative;
+            padding-right: 10px; /* 给省略号留空间 */
+            word-break: break-all;
+        }
+
+        /* 模拟省略号 */
+        .note-card .title::after {
+            content: '...';
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            background-color: #fff; /* 覆盖最后一个字，与背景色一致 */
+            padding-left: 5px;
+        }
+
+        .note-card .author {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .note-card .author-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .note-card .author-name {
+            font-size: 12px;
+            color: #8c8c8c;
+        }
+
+        .note-card .stats {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #8c8c8c;
+        }
+
+        /* 笔记详情弹窗基础样式 */
+        .note-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            z-index: 9999;
+        }
+        .note-detail-modal.active {
+            display: block;
+        }
+        .modal-mask {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 1000px;
+            height: 90vh;
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: row; /* 强制PC端左右布局 */
+        }
+        /* 关闭按钮 */
+        .note-detail-close {
+            position: fixed; /* 基于浏览器视口定位，脱离弹窗布局 */
+            top: 16px;       /* 距离页面顶部16px */
+            right: 16px;     /* 距离页面右侧16px */
+            width: 40px;     /* 放大尺寸，避免点击误触 */
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background-color: rgba(0, 0, 0, 0.8); /* 加深背景，更显眼 */
+            color: #fff;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999999; /* 最高层级，确保不被任何元素遮挡 */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* 增加阴影，区分背景 */
+            transition: background-color 0.2s; /* 交互反馈 */
+        }
+        /* 鼠标悬浮效果 */
+        .note-detail-close:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        /* 弹窗主体布局 */
+        .modal-body {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            flex-direction: row;
+        }
+        .detail-note-left {
+            width: 54%;
+            height: 100%;
+            background-color: #000;
+            position: relative;
+            flex-shrink: 0; /* 关键：防止被右侧内容压缩 */
+        }
+        .detail-note-main-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .detail-note-right {
+            width: 46%;
+            height: 100%;
+            padding: 20px;
+            padding-bottom: 80px; 
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden; /* 防止内容溢出导致布局错位 */
+        }
+        .detail-comments-wrap {
+            flex: 1; 
+            overflow-y: auto !important; /* 强制显示垂直滚动条 */
+            padding-bottom: 16px;
+            /* 新增：优化滚动条样式（可选，提升体验） */
+            scrollbar-width: thin; /* 火狐 */
+            scrollbar-color: #e5e5e5 #f8f8f8;
+        }
+        /* 新增：webkit内核浏览器滚动条样式（Chrome/Safari） */
+        .detail-comments-wrap::-webkit-scrollbar {
+            width: 6px;
+        }
+        .detail-comments-wrap::-webkit-scrollbar-track {
+            background: #f8f8f8;
+            border-radius: 3px;
+        }
+        .detail-comments-wrap::-webkit-scrollbar-thumb {
+            background: #e5e5e5;
+            border-radius: 3px;
+        }
+        .detail-comments-wrap::-webkit-scrollbar-thumb:hover {
+            background: #d4d4d4;
+        }
+        /* 笔记头部 */
+        .detail-note-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .detail-author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #e0e0e0;
+        }
+        .detail-author-name {
+            font-weight: 500;
+            font-size: 16px;
+            flex: 1;
+        }
+        .detail-follow-btn-small {
+            width: 60px;
+            height: 30px;
+            background-color: #ff2442;
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        /* 笔记内容 */
+        .detail-note-content {
+            margin-bottom: 20px;
+        }
+        .detail-note-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .detail-note-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        .detail-note-tags {
+            font-size: 14px;
+            color: #0066ff;
+            margin-bottom: 8px;
+        }
+        .detail-note-date {
+            font-size: 12px;
+            color: #8c8c8c;
+        }
+        /* 评论区 */
+        .detail-comments-section {
+            margin-bottom: 20px;
+        }
+        .detail-comments-count {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+        .detail-comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px; /* 评论之间的间距 */
+        }
+        .detail-comment-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* 评论主体和回复区的间距 */
+        }
+        .detail-comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid #e0e0e0;
+        }
+        .detail-comment-content {
+            flex: 1;
+        }
+        .detail-comment-author {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .detail-comment-author-tag {
+            display: inline-block;
+            font-size: 12px;
+            color: #ff2442;
+            border: 1px solid #ff2442;
+            border-radius: 2px;
+            padding: 0 4px;
+            margin-left: 6px;
+            line-height: 14px;
+            vertical-align: middle;
+        }
+        .detail-comment-text {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+        .detail-comment-meta {
+            font-size: 12px;
+            color: #8c8c8c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .detail-comment-like {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        /* 单条评论的回复折叠按钮样式 */
+        .expand-replies-btn {
+            font-size: 14px;
+            color: #8c8c8c;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: color 0.2s;
+        }
+        .expand-replies-btn:hover {
+            color: #1f1f1f;
+        }
+        
+        /* 隐藏回复的默认样式 */
+        .detail-comment-replies.hidden {
+            display: none;
+        }
+        /* 回复层级样式（匹配截图缩进） */
+        .detail-comment-replies {
+            margin-left: 30px; /* 回复缩进 */
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* 回复之间的间距 */
+        }
+        .detail-comment-reply {
+            display: block;
+            width: 100%;
+        }
+        /* 单条回复样式 */
+        .detail-reply-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .detail-toggle-comments {
+            font-size: 14px;
+            color: #8c8c8c;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        /* 底部互动栏 */
+        .detail-note-actions {
+            border-top: 1px solid #f5f5f5;
+            padding: 16px 20px;
+            background-color: #ffffff;
+            box-sizing: border-box;
+            position: absolute; /* 关键：改为绝对定位 */
+            bottom: 0; /* 固定在底部 */
+            left: 0;
+            right: 0; /* 左右贴边 */
+            z-index: 10;
+        }
+        .detail-comment-input {
+            width: 100%;
+            height: 36px;
+            border: 1px solid #e5e5e5;
+            border-radius: 18px;
+            padding: 0 16px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            outline: none;
+        }
+        .detail-action-icons {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            font-size: 14px;
+            color: #1f1f1f;
+        }
+        .detail-action-icons span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+        .detail-like-icon, .detail-star-icon, .detail-comment-icon, .detail-share-icon {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 0 8px;
+            }
+
+            .sidebar {
+                flex-direction: row;
+                height: auto;
+                padding: 12px 16px;
+                position: static;
+                width: 100%; /* 移动端占满宽度 */
+            }
+
+            .sidebar .logo {
+                width: 70px; /* 移动端缩小宽度，适配小屏 */
+                height: 28px; /* 等比例缩小高度，保持椭圆比例 */
+                border-radius: 14px; /* 高度的一半，维持椭圆形态 */
+                font-size: 14px; /* 移动端文字缩小，适配尺寸 */
+                margin-bottom: 8px; /* 增加底部间距，适配横向导航 */
+            }
+
+            .sidebar .user-entry {
+                margin-top: 0;
+                padding: 8px 8px;
+            }
+            .sidebar .user-avatar {
+                width: 20px;
+                height: 20px;
+            }
+            .sidebar .user-text {
+                font-size: 14px;
+            }
+
+            .sidebar .nav-list {
+                margin-top: 0; /* 移动端取消logo间距 */
+                flex-direction: row;
+                gap: 16px;
+            }
+
+            .sidebar .switch-account-btn {
+                margin-top: 0;
+                margin-left: auto;
+                margin-bottom: 0;
+                padding: 6px 12px;
+                font-size: 14px;
+                border-radius: 16px;
+                width: auto;
+                white-space: nowrap; /* 移动端也强制不换行 */
+            }
+            /* 主内容区适配 */
+            .top-search {
+                flex-direction: column;
+                gap: 16px;
+                margin-bottom: 20px;
+            }
+
+            .search-box {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .top-nav {
+                align-self: flex-end;
+            }
+            /* 用户信息区适配 */
+            .user-profile {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .user-avatar-big {
+                width: 80px;
+                height: 80px;
+            }
+
+            .user-header {
+                flex-wrap: wrap;
+            }
+            /* 笔记网格适配 */
+            .notes-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 8px;
+            }
+            .collection-content {
+                min-height: 300px;
+            }
+            .empty-icon {
+                font-size: 30px; /* 移动端缩小 */
+            }
+            /* 弹窗适配 */
+            .modal-content {
+                width: 95%;
+                height: 95vh;
+                flex-direction: column;
+            }
+            .detail-note-left {
+                width: 100%;
+                height: 50%;
+            }
+            .detail-note-right {
+                width: 100%;
+                height: 50%;
+                padding: 16px;
+                padding-bottom: 80px;
+                overflow: hidden !important; /* 移动端同样强制隐藏父溢出 */
+            }  
+            .detail-comments-wrap {
+                flex: 1;
+                overflow-y: auto !important;
+                padding-bottom: 16px;
+            }
+            .detail-note-actions {
+                padding: 16px 16px;
+                position: absolute; /* 移动端保持绝对定位 */
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+            }
+            .note-detail-close {
+                width: 36px; /* 改回36px，和PC端一致 */
+                height: 36px;
+                font-size: 16px;
+                top: 16px;
+                right: 16px;
+                z-index: 999999;
+                /* 新增：扩大点击热区 */
+                padding: 4px;
+                box-sizing: content-box;
+            }
+            .detail-action-icons {
+                gap: 16px;
+            }
+        }
+    </style>
+    <!-- 引入图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 左侧侧边栏 -->
+        <div class="sidebar">
+            <div class="logo">小红书</div>
+            <div class="nav-list">
+                <div class="nav-item">
+                    <i class="fas fa-compass"></i>
+                    <span>发现</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-plus"></i>
+                    <span>发布</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-bell"></i>
+                    <span>通知</span>
+                </div>
+            </div>
+            <!-- 账号按钮-->
+            <div class="switch-account-btn">
+                <i class="fas fa-bars"></i> 
+                <span>登录账号</span> 
+            </div>
+        </div>
+
+        <!-- 右侧主内容区 -->
+        <div class="main-content">
+            <!-- 顶部搜索栏 -->
+            <div class="top-bar">
+                <div class="search-box">
+                    <i class="fas fa-search" style="color: #8c8c8c;"></i>
+                    <input type="text" placeholder="搜索账号查看更多内容">
+                </div>
+                <div class="top-nav">
+                    <span>创作中心</span>
+                    <span>业务合作</span>
+                </div>
+            </div>
+
+            <!-- 用户信息区 -->
+            <div class="user-profile">
+                <div class="avatar-wrapper">
+                    <img class="user-avatar-big" src="images/zhou.png" alt="周哥副业实战头像">
+                </div>
+                <div class="user-info">
+                    <div class="user-header">
+                        <div class="username">周哥副业实战</div>
+                        <button class="follow-btn">关注</button>
+                    </div>
+                    <div class="user-meta">
+                        小红书号: 70501 | IP属地: 青溪市
+                    </div>
+                    <div class="user-signature">
+                        8年新媒体运营｜副业实战导师<br>
+                        零投入零门槛｜傻瓜式教学<br>
+                        1v1指导+稳定货源｜已带2000+新手出单<br>
+                        帮普通人轻松搞到第一桶金💰<br>
+                    </div>
+                    <div class="user-stats">
+                        <div><span>23</span>关注</div>
+                        <div><span>4217</span>粉丝</div>
+                        <div><span>5.6万</span>获赞与收藏</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 笔记标签栏（修改激活态逻辑） -->
+            <div class="note-tabs">
+                <div class="note-tab active-tab" data-tab="notes">
+                    <span>笔记</span>
+                </div>
+                <div class="note-tab unactive" data-tab="collection">
+                    <span>收藏</span>
+                </div>
+            </div>
+
+            <!-- 笔记卡片列表 -->
+            <div class="notes-grid" id="notes-content">
+                <!-- 笔记1 -->
+                <div class="note-card">
+                    <img class="note-img" src="images/shipin.png" alt="笔记图片">
+                    <div class="note-title">剪映0基础3分钟上手｜新手副业第一步</div>
+                    <div class="note-meta">
+                        <img src="images/zhou.png" alt="周哥副业实战头像">
+                        <span class="note-author">周哥副业实战</span>
+                        <span class="like-wrap"><i class="fas fa-heart"></i> 2599</span>
+                    </div>
+                </div>
+                <!-- 笔记2 -->
+                <div class="note-card">
+                    <img class="note-img" src="images/chudan.png" alt="笔记图片">
+                    <div class="note-title">学员7天出单反馈｜新手真的可以赚到钱</div>
+                    <div class="note-meta">
+                        <img src="images/zhou.png" alt="周哥副业实战头像">
+                        <span class="note-author">周哥副业实战</span>
+                        <span class="like-wrap"><i class="fas fa-heart"></i> 712</span>
+                    </div>
+                </div>
+                <!-- 笔记3 -->
+                <div class="note-card">
+                    <img class="note-img" src="images/bikeng.png" alt="笔记图片">
+                    <div class="note-title">副业避坑｜这3种割韭菜套路，直接拉黑</div>
+                    <div class="note-meta">
+                        <img src="images/zhou.png" alt="周哥副业实战头像">
+                        <span class="note-author">周哥副业实战</span>
+                        <span class="like-wrap"><i class="fas fa-heart"></i> 1550</span>
+                    </div>
+                </div>
+                <!-- 笔记4 -->
+                <div class="note-card">
+                    <img class="note-img" src="images/fuye.png" alt="笔记图片">
+                    <div class="note-title">零经验副业，轻松月入3k+</div>
+                    <div class="note-meta">
+                        <img src="images/zhou.png" alt="周哥副业实战头像">
+                        <span class="note-author">周哥副业实战</span>
+                        <span class="like-wrap"><i class="fas fa-heart"></i> 3224</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 收藏区域 -->
+            <div class="collection-content" id="collection-content">
+                <div class="collection-empty">
+                    <i class="fas fa-lock empty-icon"></i>
+                    <p class="empty-text">该用户已设置收藏内容不可见，需登录以查看更多信息</p>
+                </div>
+            </div>
+
+            <!-- 笔记详情弹窗 -->
+            <div class="note-detail-modal" id="noteDetailModal">
+                <div class="modal-mask"></div>
+                <button class="modal-close note-detail-close" id="noteDetailClose"><i class="fas fa-times"></i></button>
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="detail-note-left">
+                            <img class="detail-note-main-img" src="" alt="笔记主图">
+                        </div>
+                        <div class="detail-note-right">
+                            <div class="detail-comments-wrap"> <!-- 滚动容器，包含所有内容 -->
+                                <div class="detail-note-header">
+                                    <img class="detail-author-avatar" src="" alt="作者头像">
+                                    <span class="detail-author-name">周哥副业实战</span>
+                                    <button class="detail-follow-btn-small">关注</button>
+                                </div>
+                                <div class="detail-note-content">
+                                    <h3 class="detail-note-title"></h3>
+                                    <p class="detail-note-desc"></p>
+                                    <div class="detail-note-tags"></div>
+                                    <div class="detail-note-date"></div>
+                                </div>
+                                <div class="detail-comments-section">
+                                    <div class="detail-comments-count"></div>
+                                    <div class="detail-comments-list">
+                                        <!-- 评论项：动态生成 -->
+                                    </div>
+                                    <div class="detail-toggle-comments" style="display: none;">
+                                        <span>展开 2 条回复</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detail-note-actions">
+                                <input type="text" placeholder="说点什么..." class="detail-comment-input">
+                                <div class="detail-action-icons">
+                                    <span class="detail-like-icon"><i class="fas fa-heart"></i> <span class="detail-like-count"></span></span>
+                                    <span class="detail-star-icon"><i class="fas fa-star"></i> <span class="detail-star-count"></span></span>
+                                    <span class="detail-comment-icon"><i class="fas fa-comment"></i> <span class="detail-comment-count"></span></span>
+                                    <span class="detail-share-icon"><i class="fas fa-share"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 切换账号弹窗 -->
+            <div class="switch-account-modal">
+                <div class="modal-mask"></div>
+                <div class="modal-box">
+                    <div class="modal-header">
+                        <h3>切换账号</h3>
+                        <button class="modal-close switch-modal-close"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-item">
+                            <label>账号</label>
+                            <input type="text" id="accountInput" placeholder="请输入小红书账号">
+                        </div>
+                        <div class="input-item">
+                            <label>密码</label>
+                            <input type="password" id="passwordInput" placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="login-btn">登录</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        // 搜索框交互逻辑 
+        const searchInput = document.querySelector('.search-box input');
+        searchInput.addEventListener('keydown', (e) => {
+            // 监听回车键（兼容新旧浏览器key/keyCode）
+            if (e.key === 'Enter' ) {
+                const searchText = searchInput.value.trim(); // 去除首尾空格
+                if (searchText === '柰花集') {
+                    // 匹配关键词，跳转至指定页面
+                    window.location.href = 'ssredbook-lin.html';
+                } 
+                else if (searchText === '周哥副业实战') {
+                    // 匹配关键词，跳转至对应的页面
+                    window.location.href = 'ssredbook-zhou.html';
+                }
+                else {
+                    // 不匹配则提示并清空输入框
+                    alert('搜索不到该账号相关信息');
+                    searchInput.value = '';
+                }
+            }
+        });
+
+        // 笔记数据（虚构内容）
+        const noteData = [
+            {
+                id: 1,
+                mainImg: "images/shipin.png",
+                title: "剪映0基础3分钟上手｜新手副业第一步",
+                desc: [
+                    "别再说不会剪辑了！",
+                    "剪映傻瓜式教程，0基础3分钟学会，新手副业直接起步",
+                    "✅ 第一步：导入素材，选好尺寸",
+                    "✅ 第二步：一键自动字幕，不用手打",
+                    "✅ 第三步：添加模板转场，秒变专业",
+                    "✅ 第四步：导出1080P，直接能接单",
+                    "不用懂专业知识，我把模板都整理好了",
+                    "评论区扣「模板」，直接发你，跟着用就行",
+                    "3天就能轻松接单～"
+                ],
+                tags: "#剪映教程 #新手剪辑 #副业入门 #零经验副业",
+                date: "2026-02-24",
+                like: 2599,
+                star: 877,
+                comment: 112,
+                comments: [
+                    {
+                        avatar: "images/Avatar/7.png",
+                        author: "夕颜",
+                        text: "模板！0基础真的太需要了",
+                        date: "2026-03-01 青溪",
+                        like: 3,
+                        // 改为replies数组（多条回复）
+                        replies: [
+                            {
+                                avatar: "images/zhou.png",
+                                author: "周哥副业实战",
+                                isAuthor: true,
+                                text: "已发",
+                                date: "2026-03-01 青溪",
+                                like: 1
+                            }
+                        ]
+                    },
+                    {
+                        avatar: "images/Avatar/8.png",
+                        author: "荔枝味晚风",
+                        text: "真的3分钟就能学会？",
+                        date: "2026-02-27 青溪",
+                        like: 2,
+                        replies: [
+                            {
+                                avatar: "images/zhou.png",
+                                author: "周哥副业实战",
+                                isAuthor: true,
+                                text: "没问题的，私信我发你教程",
+                                date: "2026-02-27 青溪",
+                                like: 0
+                            }
+                        ]
+                    },
+                    {
+                        avatar: "images/Avatar/9.png",
+                        author: "暴富小锦鲤",
+                        text: "求模板",
+                        date: "2026-02-26 青溪",
+                        like: 1,
+                        replies: [] // 无回复
+                    }
+                ]
+            },
+            {
+                id: 2,
+                mainImg: "images/chudan.png",
+                title: "学员7天出单反馈｜新手真的可以赚到钱",
+                desc: [
+                    "不画饼！真实学员反馈💪",
+                    "0基础宝妈，跟着学7天，成功出单",
+                    "赚了280，虽然不多，但是好的开始",
+                    "很多新手觉得副业难，其实只要找对方法、有人带，真的不难",
+                    "不用露脸，不用囤货，套模板就能做",
+                    "想跟着做的宝子，评论区扣「1」拉你进群",
+                    "前30名送接单资源包，手把手带～"
+                ],
+                tags: "#副业反馈 #学员出单 #真实副业 #宝妈副业 #新手搞钱",
+                date: "2026-02-14",
+                like: 712,
+                star: 75,
+                comment: 3,
+                comments: [
+                    {
+                        avatar: "images/Avatar/5.png",
+                        author: "小仙兔",
+                        text: "111，求带",
+                        date: "2026-02-15 青溪",
+                        like: 2,
+                        reply: null
+                    },
+                    {
+                        avatar: "images/Avatar/6.png",
+                        author: "发财要紧",
+                        text: "跟着周哥第十天，赚了600+，真的靠谱",
+                        date: "2026-02-14 青溪",
+                        like: 1,
+                        reply: null
+                    }
+                ]
+            },
+            {
+                id: 3,
+                mainImg: "images/bikeng.png",
+                title: "副业避坑｜这3种割韭菜套路，直接拉黑",
+                desc: [
+                    "新手搞副业，别被割韭菜了😭",
+                    "8年实战经验，总结3个必避坑点:",
+                    "❌ 先交高额培训费、押金，再教技术",
+                    "❌ 承诺月入过万，不教实操只画饼",
+                    "❌ 不签正规协议，售后找不到人",
+                    "我这里：",
+                    "✅ 零投入入门，先教技术再谈合作",
+                    "✅ 签正规合作协议，保障双方权益",
+                    "✅ 不搞虚的，只做能落地的副业",
+                    "新手想避坑，扣「避坑」拉你进群交流"
+                ],
+                tags: "#副业避坑 #防骗指南 #新手副业避坑 #搞钱不踩坑",
+                date: "2026-02-10",
+                like: 1550,
+                star: 228,
+                comment: 8,
+                comments: [
+                    {
+                        avatar: "images/Avatar/3.png",
+                        author: "一粥一饭",
+                        text: "避坑避坑！之前被骗了2k多押金，求靠谱的",
+                        date: "2026-02-10 青溪",
+                        like: 6,
+                        replies: [
+                            {
+                                avatar: "images/zhou.png",
+                                author: "周哥副业实战",
+                                isAuthor: true,
+                                text: "私信我，拉你进群，我教你怎么找靠谱的",
+                                date: "2026-02-18 青溪",
+                                like: 1
+                            }
+                        ]
+                    },
+                    {
+                        avatar: "images/Avatar/4.png",
+                        author: "柚子不困",
+                        text: "求推荐",
+                        date: "2026-02-10 青溪",
+                        like: 2,
+                        replies: []
+                    }
+                ]
+            },
+            {
+                id: 4,
+                mainImg: "images/fuye.png",
+                title: "零经验副业，轻松月入3k+",
+                desc: [
+                    "宝子们！别再靠死工资了😭 下班1小时，零投入、零经验，新手也能轻松搞钱，最快7天就出单！",
+                    "不用露脸、不用囤货、不用懂技术，主打一个轻松躺赚，适合学生党、宝妈、打工人，碎片化时间就能做",
+                    "✅ 副业类型：新媒体图文排版、短视频剪辑（简单操作，我手把手教）",
+                    "✅ 收益预期：新手100-300/天，熟练后500+，月入3k-8k，多劳多得",
+                    "✅ 核心优势：",
+                    "1️⃣ 零投入：不用交押金、不用买课程，免费带入门",
+                    "2️⃣ 零经验：手把手教学，3天就能上手",
+                    "3️⃣ 稳出单：我对接资源，不用自己找客户，接单直接躺赚",
+                    "4️⃣ 时间自由：下班、周末、带娃间隙，想做就做，不耽误主业",
+                    "重点！现在带新人，前50名免费指导，一对一教操作、对接订单，没有套路，纯干货带赚💪",
+                    "想搞副业、想增收的宝子，评论区扣“想赚”，私信我，我手把手带你起步！"
+                ],
+                tags: "#新手副业 #零投入副业 #新媒体副业 #下班搞钱 #学生党副业 #宝妈副业 #搞钱干货",
+                date: "2026-02-08",
+                like: 3224,
+                star: 2134,
+                comment: 121,
+                comments: [
+                    {
+                        avatar: "images/Avatar/12.png",
+                        author: "学生党小宇",
+                        text: "扣想赚！新手真的能学会吗？完全不会剪辑",
+                        date: "2026-02-18 青溪",
+                        like: 6,
+                        replies: [
+                            {
+                                avatar: "images/zhou.png",
+                                author: "周哥副业实战",
+                                isAuthor: true,
+                                text: "完全能！剪映傻瓜式操作，我每天发教程，3天就能上手，放心来",
+                                date: "2026-02-18 青溪",
+                                like: 1
+                            }
+                        ]
+                    },
+                    {
+                        avatar: "images/Avatar/13.png",
+                        author: "超人妈妈",
+                        text: "每天1小时真的够吗？带娃没太多时间",
+                        date: "2026-02-16 青溪",
+                        like: 6,
+                        replies: [
+                            {
+                                avatar: "images/zhou.png",
+                                author: "周哥副业实战",
+                                isAuthor: true,
+                                text: "够！带娃间隙剪1条，一天赚几十上百，一点儿不耽误",
+                                date: "2026-02-16 青溪",
+                                like: 1
+                            },
+                            {
+                                avatar: "images/Avatar/14.png",
+                                author: "一诺妈妈",
+                                text: "我也是宝妈，每天趁娃睡了做1小时，已经赚800多了",
+                                date: "2026-02-16 青溪",
+                                like: 1
+                            },
+                        ]
+                    },
+                    {
+                        avatar: "images/Avatar/15.png",
+                        author: "怕坑选手",
+                        text: "需要签合同吗？之前被坑过，有点怕",
+                        date: "2026-02-12 青溪",
+                        like: 6,
+                        replies: [
+                            {
+                                avatar: "images/zhou.png",
+                                author: "周哥副业实战",
+                                isAuthor: true,
+                                text: "简单签个合作协议，保障双方权益，没有霸王条款，放心！",
+                                date: "2026-02-12 青溪",
+                                like: 1
+                            }
+                        ]
+                    },
+                    {
+                        avatar: "images/moli.png",
+                        author: "柰花集",
+                        text: "想赚！新手求带，真的能稳定出单吗？",
+                        date: "2026-02-09 青溪",
+                        like: 6,
+                        replies: [
+                            {
+                                avatar: "images/zhou.png",
+                                author: "周哥副业实战",
+                                isAuthor: true,
+                                text: "放心！我对接稳定资源，只要跟着做，每天都能出单，私信详说",
+                                date: "2026-02-09 青溪",
+                                like: 1
+                            }
+                        ]
+                    },
+                    {
+                        avatar: "images/Avatar/16.png",
+                        author: "摆烂中勿扰",
+                        text: "赚点奶茶钱太香了，感谢周哥",
+                        date: "2026-02-09 青溪",
+                        like: 6,
+                        replies: []
+                    },
+                    {
+                        avatar: "images/Avatar/17.png",
+                        author: "momo(打工中)",
+                        text: "想赚",
+                        date: "2026-02-09 青溪",
+                        like: 6,
+                        replies: []
+                    },
+                    {
+                        avatar: "images/Avatar/18.png",
+                        author: "椰椰冰不加糖",
+                        text: "想赚",
+                        date: "2026-02-08 青溪",
+                        like: 6,
+                        replies: []
+                    },
+                    {
+                        avatar: "images/Avatar/19.png",
+                        author: "一颗青提",
+                        text: "想赚",
+                        date: "2026-02-08 青溪",
+                        like: 6,
+                        replies: []
+                    },
+                    {
+                        avatar: "images/Avatar/20.png",
+                        author: "木也不熬夜",
+                        text: "想赚",
+                        date: "2026-02-08 青溪",
+                        like: 6,
+                        replies: []
+                    }
+                ]
+            }
+        ];
+
+
+        // 获取元素
+        const noteCards = document.querySelectorAll('.note-card');
+        const detailMainImg = document.querySelector('.detail-note-main-img');
+        const detailAuthorAvatar = document.querySelector('.detail-author-avatar');
+        const detailAuthorName = document.querySelector('.detail-author-name');
+        const detailNoteTitle = document.querySelector('.detail-note-title');
+        const detailNoteDesc = document.querySelector('.detail-note-desc');
+        const detailNoteTags = document.querySelector('.detail-note-tags');
+        const detailNoteDate = document.querySelector('.detail-note-date');
+        const detailLikeCount = document.querySelector('.detail-like-count');
+        const detailStarCount = document.querySelector('.detail-star-count');
+        const detailCommentCount = document.querySelector('.detail-comment-count');
+        const detailCommentsList = document.querySelector('.detail-comments-list');
+
+        noteCards.forEach((card, index) => {
+            card.addEventListener('click', () => {
+                const note = noteData[index];
+                // 填充弹窗基础信息
+                detailMainImg.src = note.mainImg;
+                detailAuthorAvatar.src = 'images/zhou.png';
+                detailAuthorName.textContent = '周哥副业实战';
+                detailNoteTitle.textContent = note.title;
+                // 处理数组形式的描述文本
+                if (Array.isArray(note.desc)) {
+                    detailNoteDesc.innerHTML = note.desc.map(item => `<p>${item}</p>`).join('');
+                } else {
+                    detailNoteDesc.textContent = note.desc;
+                }
+                detailNoteTags.textContent = note.tags;
+                detailNoteDate.textContent = note.date;
+                detailLikeCount.textContent = note.like;
+                detailStarCount.textContent = note.star;
+                detailCommentCount.textContent = note.comment;
+                
+                // 渲染评论列表（核心逻辑）
+                renderComments(note.comments);
+                
+                // 显示弹窗
+                const noteDetailModal = document.getElementById('noteDetailModal');
+                noteDetailModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // 禁止页面滚动
+                
+            });
+        });
+
+        // 渲染评论列表（核心：子评论展开逻辑）
+        function renderComments(comments) {
+            detailCommentsList.innerHTML = ''; // 清空原有评论
+            
+            if (!comments || comments.length === 0) {
+                detailCommentsList.innerHTML = '<div style="color:#8c8c8c;text-align:center;padding:20px;">暂无评论</div>';
+                return;
+            }
+
+            comments.forEach(comment => {
+                // 1. 创建主评论容器
+                const commentItem = document.createElement('div');
+                commentItem.className = 'detail-comment-item';
+
+                // 2. 组装主评论内容
+                const commentMain = document.createElement('div');
+                commentMain.style.display = 'flex';
+                commentMain.style.alignItems = 'flex-start';
+                commentMain.style.gap = '8px';
+                commentMain.innerHTML = `
+                    <img class="detail-comment-avatar" src="${comment.avatar}" alt="评论头像">
+                    <div class="detail-comment-content">
+                        <div class="detail-comment-author">${comment.author}</div>
+                        <div class="detail-comment-text">${comment.text}</div>
+                        <div class="detail-comment-meta">
+                            <span>${comment.date}</span>
+                            <span class="detail-comment-like"><i class="fas fa-heart"></i> ${comment.like || 0}</span>
+                        </div>
+                    </div>
+                `;
+                commentItem.appendChild(commentMain);
+
+                // 3. 处理子评论（核心逻辑）
+                if (comment.replies && comment.replies.length > 0) {
+                    const repliesContainer = document.createElement('div');
+                    repliesContainer.className = 'detail-comment-replies';
+
+                    const SHOW_LIMIT = 2; // 默认显示前2条子评论
+                    const totalReplies = comment.replies.length;
+                    const showReplies = comment.replies.slice(0, SHOW_LIMIT); // 显示的子评论
+                    const hideReplies = comment.replies.slice(SHOW_LIMIT);   // 隐藏的子评论
+
+                    // 渲染默认显示的子评论
+                    showReplies.forEach(reply => {
+                        repliesContainer.appendChild(createReplyElement(reply));
+                    });
+
+                    // 子评论超过2条时，添加「展开更多」按钮
+                    if (hideReplies.length > 0) {
+                        const expandBtn = document.createElement('div');
+                        expandBtn.className = 'expand-replies-btn';
+                        expandBtn.textContent = `展开（${hideReplies.length}条回复）`;
+
+                        // 点击展开按钮：显示所有隐藏的子评论 + 隐藏按钮
+                        expandBtn.addEventListener('click', () => {
+                            hideReplies.forEach(reply => {
+                                repliesContainer.appendChild(createReplyElement(reply));
+                            });
+                            expandBtn.style.display = 'none'; // 隐藏展开按钮（无收起逻辑）
+                        });
+
+                        repliesContainer.appendChild(expandBtn);
+                    }
+
+                    commentItem.appendChild(repliesContainer);
+                }
+
+                detailCommentsList.appendChild(commentItem);
+            });
+        }
+
+        // 辅助函数：创建单条子评论元素
+        function createReplyElement(reply) {
+            const replyItem = document.createElement('div');
+            replyItem.className = 'detail-reply-item';
+            
+            // 作者标签（如果是博主回复）
+            const authorTag = reply.isAuthor ? '<span class="detail-comment-author-tag">作者</span>' : '';
+            
+            replyItem.innerHTML = `
+                <img class="detail-comment-avatar" src="${reply.avatar}" alt="回复头像">
+                <div class="detail-comment-content">
+                    <div class="detail-comment-author">${reply.author}${authorTag}</div>
+                    <div class="detail-comment-text">${reply.text}</div>
+                    <div class="detail-comment-meta">
+                        <span>${reply.date}</span>
+                        <span class="detail-comment-like"><i class="fas fa-heart"></i> ${reply.like || 0}</span>
+                    </div>
+                </div>
+            `;
+            return replyItem;
+        }
+
+        // 关闭弹窗逻辑
+        const noteDetailModal = document.getElementById('noteDetailModal');
+        const noteDetailClose = document.getElementById('noteDetailClose');
+        const modalMask = noteDetailModal.querySelector('.modal-mask');
+
+        // 关闭按钮点击关闭弹窗
+        noteDetailClose.addEventListener('click', function() {
+            noteDetailModal.classList.remove('active');
+            document.body.style.overflow = 'auto'; // 恢复页面滚动
+        });
+
+        // 点击遮罩层也关闭弹窗（可选，提升体验）
+        modalMask.addEventListener('click', function() {
+            noteDetailModal.classList.remove('active');
+            document.body.style.overflow = 'auto'; // 恢复页面滚动
+        });
+
+        // 标签切换逻辑
+        const noteTabs = document.querySelectorAll('.note-tab');
+        const notesContent = document.getElementById('notes-content');
+        const collectionContent = document.getElementById('collection-content');
+
+        noteTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 切换标签激活态
+                noteTabs.forEach(t => {
+                    t.classList.remove('active-tab');
+                    t.classList.add('unactive');
+                });
+                tab.classList.add('active-tab');
+                tab.classList.remove('unactive');
+
+                // 切换内容区域
+                const tabType = tab.dataset.tab;
+                if (tabType === 'notes') {
+                    notesContent.classList.remove('inactive');
+                    collectionContent.classList.remove('active');
+                    collectionContent.style.display = 'none';
+                    notesContent.style.display = 'grid';
+                } else if (tabType === 'collection') {
+                    notesContent.classList.add('inactive');
+                    collectionContent.classList.add('active');
+                    collectionContent.style.display = 'flex';
+                    notesContent.style.display = 'none';
+                }
+            });
+        });
+
+
+        // 切换账号弹窗逻辑
+        const switchAccountBtn = document.querySelector('.switch-account-btn');
+        const switchAccountModal = document.querySelector('.switch-account-modal');
+        const switchAccountModalClose = document.querySelector('.switch-modal-close');
+        const loginBtn = document.querySelector('.modal-footer .login-btn');
+        const accountInput = document.getElementById('accountInput');
+        const passwordInput = document.getElementById('passwordInput');
+
+        // 打开弹窗
+        switchAccountBtn.addEventListener('click', () => {
+            // 清空输入框
+            document.getElementById('accountInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            switchAccountModal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 禁止页面滚动
+        });
+
+        // 关闭弹窗
+        function closeModal() {
+            const switchAccountModal = document.querySelector('.switch-account-modal');
+            switchAccountModal.classList.remove('active');
+            document.body.style.overflow = 'auto'; // 恢复页面滚动
+            // 清空输入框，提升体验
+            document.getElementById('accountInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            // 点击关闭后返回当前页面（保持滚动位置，无需跳转）
+            window.scrollTo(0, window.scrollY);
+        }
+        // 绑定关闭按钮点击事件（确保触发关闭逻辑）
+        switchAccountModalClose.addEventListener('click', closeModal);
+        // 点击遮罩层关闭弹窗
+        document.querySelector('.modal-mask').addEventListener('click', closeModal);
+
+        // 模拟登录逻辑
+        loginBtn.addEventListener('click', () => {
+            const account = accountInput.value.trim();
+            const password = passwordInput.value.trim();
+                
+            if (!account || !password) {
+                alert('请输入账号和密码！');
+                return;
+            }
+                
+            // 验证账号密码
+            if (account === '柰花集' && password === 'n@1hu@j1oS18') {
+                // 模拟登录成功（实际项目中替换为真实接口请求）
+                alert(`账号 ${account} 登录成功！`);
+                closeModal();
+                // 跳转到redbook-lin.html
+                window.location.href = 'redbook-lin.html';
+            } else if (account === '周哥副业实战' && password === 'jjalsyjc') {
+                // 模拟登录成功（实际项目中替换为真实接口请求）
+                alert(`账号 ${account} 登录成功！`);
+                closeModal();
+                // 跳转到redbook-zhou.html
+                window.location.href = 'redbook-zhou.html';
+            } else {
+                alert('账号或密码错误！');
+            }
+        });
+
+        
+    </script>
+</body>
+</html>

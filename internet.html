@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .version-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .version-tab {
+            padding: 6px 12px;
+            margin: 0 5px;
+            border-radius: 16px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .version-tab.active {
+            background-color: #e6e6e6;
+        }
+        
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            height: 44px;
+            border: 1px solid #e6e6e6;
+            border-radius: 22px;
+            padding: 0 16px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+        
+        .search-box input::placeholder {
+            color: #999;
+        }
+        
+        .search-icons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .mic-icon {
+            color: #666;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .search-icon {
+            color: #0066ff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .hot-topics {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .hot-topics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .hot-topics-title {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .refresh-link {
+            font-size: 14px;
+            color: #666;
+            text-decoration: none;
+        }
+        
+        .hot-topics-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        
+        .hot-topic-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        
+        .topic-number {
+            font-size: 16px;
+            font-weight: 500;
+            color: #999;
+            min-width: 18px;
+        }
+        
+        .topic-content {
+            flex: 1;
+        }
+        
+        .topic-title {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .topic-tag {
+            display: inline-block;
+            font-size: 12px;
+            color: #ff3b30;
+            margin-left: 4px;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px;
+            }
+            
+            .version-tabs {
+                margin-bottom: 16px;
+            }
+            
+            .version-tab {
+                padding: 4px 10px;
+                font-size: 12px;
+            }
+            
+            .search-container {
+                margin-bottom: 20px;
+            }
+            
+            .search-box {
+                height: 40px;
+                padding: 0 12px;
+            }
+            
+            .search-box input {
+                font-size: 14px;
+            }
+            
+            .mic-icon, .search-icon {
+                font-size: 16px;
+            }
+            
+            .hot-topics {
+                padding: 12px;
+            }
+            
+            .hot-topics-title {
+                font-size: 14px;
+            }
+            
+            .refresh-link {
+                font-size: 12px;
+            }
+            
+            .hot-topics-list {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .topic-number {
+                font-size: 14px;
+            }
+            
+            .topic-title {
+                font-size: 13px;
+            }
+        }
+        
+        /* 平板适配 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .hot-topics-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 搜索结果样式 */
+        .search-results {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        /* 加载动画 */
+        .loading-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid transparent;
+            border-top: 3px solid #0066ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* 无结果提示 */
+        .no-results {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 40px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .no-results-icon {
+            font-size: 48px;
+            color: #999;
+            margin-bottom: 16px;
+        }
+        
+        .no-results-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .no-results-message {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .suggestion-tag {
+            padding: 6px 12px;
+            background-color: #f0f0f0;
+            border-radius: 16px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+        }
+        
+        .suggestion-tag:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .search-result-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .search-result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .result-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a0dab;
+            margin-bottom: 8px;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .result-title:hover {
+            text-decoration: underline;
+        }
+        
+        .result-url {
+            font-size: 14px;
+            color: #006621;
+            margin-bottom: 6px;
+            word-break: break-all;
+        }
+        
+        .result-description {
+            font-size: 14px;
+            color: #545454;
+            line-height: 1.5;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 移动端样式 */
+        @media (max-width: 768px) {
+            .search-results {
+                padding: 12px;
+            }
+            
+            .search-result-item {
+                margin-bottom: 16px;
+                padding-bottom: 16px;
+            }
+            
+            .result-title {
+                font-size: 15px;
+            }
+            
+            .result-url {
+                font-size: 13px;
+            }
+            
+            .result-description {
+                font-size: 13px;
+            }
+            
+            .loading-container {
+                height: 150px;
+            }
+            
+            .loading-spinner {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .no-results {
+                padding: 30px 16px;
+            }
+            
+            .no-results-icon {
+                font-size: 36px;
+            }
+            
+            .no-results-title {
+                font-size: 16px;
+            }
+            
+            .no-results-message {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="search-input">
+                <div class="search-icons">
+                    <i class="fas fa-search search-icon" id="search-button"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hot-topics" id="hot-topics">
+            <div class="hot-topics-header">
+                <div class="hot-topics-title">新闻资讯</div>
+            </div>
+            <div class="hot-topics-list">
+                <div class="hot-topic-item">
+                    <div class="topic-number">1</div>
+                    <div class="topic-content">
+                        <div class="topic-title">建议把更多救命药纳入医保</div>
+                    </div>
+                </div>
+                <div class="hot-topic-item">
+                    <div class="topic-number">2</div>
+                    <div class="topic-content">
+                        <div class="topic-title">OpenClaw使用指南及误区解答<span class="topic-tag">热</span></div>
+                    </div>
+                </div>
+                <div class="hot-topic-item">
+                    <div class="topic-number">3</div>
+                    <div class="topic-content">
+                        <div class="topic-title">睡眠不足5小时肥胖率竟达41.4%</div>
+                    </div>
+                </div>
+                <div class="hot-topic-item">
+                    <div class="topic-number">4</div>
+                    <div class="topic-content">
+                        <div class="topic-title">具身模型首次实现时空记忆能力<span class="topic-tag">新</span></div>
+                    </div>
+                </div>
+                <div class="hot-topic-item">
+                    <div class="topic-number">5</div>
+                    <div class="topic-content">
+                        <div class="topic-title">眼见不为实？AI假图如何防范<span class="topic-tag">热</span></div>
+                    </div>
+                </div>
+                <div class="hot-topic-item">
+                    <div class="topic-number">6</div>
+                    <div class="topic-content">
+                        <div class="topic-title">宠物治愈经济升温</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 加载动画 -->
+        <div class="loading-container" id="loading-container">
+            <div class="loading-spinner"></div>
+        </div>
+        
+        <!-- 无结果提示 -->
+        <div class="no-results" id="no-results">
+            <div class="no-results-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="no-results-title">搜索不到相关内容</div>
+            <div class="no-results-message">请检查拼写或尝试其他关键词</div>
+        </div>
+        
+        <div class="search-results" id="search-results">
+            <!-- 周明相关搜索结果 -->
+            <div id="zhouming-results">
+                <div class="search-result-item">
+                    <a href="bossre.html" target="_blank" class="result-title">【BOSS直聘】急招 店铺孵化专员/供应链对接</a>
+                    <div class="result-description">BOSS直聘为您提供2026年Boss招聘信息，BOSS直聘在线开聊约面试，及时反馈，让找工作更便捷，找工作就上BOSS直聘！...</div>
+                </div>
+                <div class="search-result-item">
+                    <a href="deal.html" target="_blank" class="result-title">同城交易网</a>
+                    <div class="result-description">同城生活网为您提供最真实的二手信息、闲置物品价格以及闲置物品转让信息，在这里有大量的二手闲置、便民回收与同城交易信息供您查询，同城生活网，让你放心淘二手，找便民...</div>
+                </div>
+            </div>
+            
+            <!-- 创星相关搜索结果 -->
+            <div id="chuangxing-results" style="display: none;">
+                <div class="search-result-item">
+                    <a href="ccompany.html" target="_blank" class="result-title">创星新媒体有限公司 - 企业官网</a>
+                    <div class="result-description">创星新媒体有限公司，位于江南省青溪市，专注小红书个人店铺孵化、货源供应链、店铺运营服务...</div>
+                </div>
+                <div class="search-result-item">
+                    <a href="qcc.html" target="_blank" class="result-title">企查查-创星新媒体有限公司</a>
+                    <div class="result-description">数据全、查询快，从商业决策到个人选择，让”信息透明”帮你规避风险。怕查企业踩坑？企查查大数据帮你辨风险...</div>
+                </div>
+            </div>
+            
+            <!-- 青溪市相关搜索结果 -->
+            <div id="qingxishi-results" style="display: none;">
+                <div class="search-result-item">
+                    <a href="qxsbdbk.html" target="_blank" class="result-title">青溪市-百度百科</a>
+                    <div class="result-description">青溪市，是江南省下辖县级市，由青云市代管，位于江南省北部、青溪河中下游，地处太湖流域南岸，是江南省重要的电商产业基地、轻工制造基地与生态文化旅游城市...</div>
+                </div>
+                <div class="search-result-item">
+                    <a href="luntan.html" target="_blank" class="result-title">青溪市生活论坛-发现新鲜事儿</a>
+                    <div class="result-description">本论坛是青溪本土社区网站，一个专门提供本地生活、消费信息、副业交流和情感交流的网上生活家园，专注青溪百姓生活，分享市井生活乐趣，提供全面及时的生活资讯与便民服务。</div>
+                </div>
+            </div>
+            
+            <!-- 万和寺相关搜索结果 -->
+            <div id="wanhesi-results" style="display: none;">
+                <div class="search-result-item">
+                    <a href="wanhesi.html" target="_blank" class="result-title">万和寺-火遍青溪！本地人私藏的祈福宝地！超灵的！！</a>
+                    <div class="result-description">青溪市的万和寺近来吸引了大批游客。不管是本地市民，还是周边城市赶来的朋友，都纷纷奔赴这座百年古寺，焚香祈福、打卡散心，香火日渐旺盛，成了青溪当下最火的文旅地标。</div>
+                </div>
+            </div>
+
+            <!-- 小易云盘相关搜索结果 -->
+            <div id="xiaoyunpan-results" style="display: none;">
+                <div class="search-result-item">
+                    <a href="yunpan.html" target="_blank" class="result-title">小易云盘-安全可靠的文件共享服务</a>
+                    <div class="result-description">小易云盘提供安全、稳定、高效的云存储服务，支持文件上传、下载、分享和管理，为个人和企业用户提供便捷的文件存储解决方案。</div>
+                </div>
+            </div>
+            
+            <!-- 反诈宣传相关搜索结果 -->
+            <div id="fangzha-results" style="display: none;">
+                <div class="search-result-item">
+                    <a href="fanzha.html" target="_blank" class="result-title">网络违法犯罪举报-反诈专区</a>
+                    <div class="result-description">为严厉打击电信网络诈骗、非法获取公民个人信息、网络敲诈勒索等违法犯罪活动，切实保护公民隐私与财产安全，青溪市公安局开设……</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 初始化元素
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const hotTopics = document.getElementById('hot-topics');
+        const searchResults = document.getElementById('search-results');
+        const loadingContainer = document.getElementById('loading-container');
+        const noResults = document.getElementById('no-results');
+        
+        // 目标搜索词汇
+        const targetKeywords = ['周明', '创星', '创星新媒体', '青溪市', '江南省青溪市', '万和寺','小易云盘', '反诈宣传'];
+        
+        // 搜索功能
+        function performSearch() {
+            const inputValue = searchInput.value.trim();
+            
+            // 隐藏所有内容
+            hotTopics.style.display = 'none';
+            searchResults.style.display = 'none';
+            noResults.style.display = 'none';
+            
+            // 显示加载动画
+            loadingContainer.style.display = 'flex';
+            
+            // 模拟搜索延迟
+            setTimeout(function() {
+                // 隐藏加载动画
+                loadingContainer.style.display = 'none';
+                
+                // 验证输入是否为目标词汇
+                if (targetKeywords.includes(inputValue)) {
+                    // 根据关键词显示不同的搜索结果
+                    if (inputValue === '创星' || inputValue === '创星新媒体') {
+                        // 显示创星相关搜索结果
+                        document.getElementById('chuangxing-results').style.display = 'block';
+                        document.getElementById('zhouming-results').style.display = 'none';
+                        document.getElementById('qingxishi-results').style.display = 'none';
+                        document.getElementById('wanhesi-results').style.display = 'none';
+                    } else if (inputValue === '周明') {
+                        // 显示周明相关搜索结果
+                        document.getElementById('zhouming-results').style.display = 'block';
+                        document.getElementById('chuangxing-results').style.display = 'none';
+                        document.getElementById('qingxishi-results').style.display = 'none';
+                        document.getElementById('wanhesi-results').style.display = 'none';
+                    } else if (inputValue === '青溪市' || inputValue === '江南省青溪市') {
+                        // 显示青溪市相关搜索结果
+                        document.getElementById('qingxishi-results').style.display = 'block';
+                        document.getElementById('zhouming-results').style.display = 'none';
+                        document.getElementById('chuangxing-results').style.display = 'none';
+                        document.getElementById('xiaoyunpan-results').style.display = 'none';
+                        document.getElementById('wanhesi-results').style.display = 'none';
+                    } else if (inputValue === '万和寺') {
+                        // 显示万和寺相关搜索结果
+                        document.getElementById('qingxishi-results').style.display = 'none';
+                        document.getElementById('zhouming-results').style.display = 'none';
+                        document.getElementById('chuangxing-results').style.display = 'none';
+                        document.getElementById('xiaoyunpan-results').style.display = 'none';
+                        document.getElementById('wanhesi-results').style.display = 'block';
+                    } else if (inputValue === '小易云盘') {
+                        // 显示小易云盘相关搜索结果
+                        document.getElementById('xiaoyunpan-results').style.display = 'block';
+                        document.getElementById('zhouming-results').style.display = 'none';
+                        document.getElementById('chuangxing-results').style.display = 'none';
+                        document.getElementById('qingxishi-results').style.display = 'none';
+                        document.getElementById('fangzha-results').style.display = 'none';
+                        document.getElementById('wanhesi-results').style.display = 'none';
+                    } else if (inputValue === '反诈宣传') {
+                        // 显示反诈宣传相关搜索结果
+                        document.getElementById('fangzha-results').style.display = 'block';
+                        document.getElementById('zhouming-results').style.display = 'none';
+                        document.getElementById('chuangxing-results').style.display = 'none';
+                        document.getElementById('qingxishi-results').style.display = 'none';
+                        document.getElementById('xiaoyunpan-results').style.display = 'none';
+                        document.getElementById('wanhesi-results').style.display = 'none';
+                    }
+                    searchResults.style.display = 'block';
+                } else {
+                    // 显示无结果提示
+                    noResults.style.display = 'block';
+                }
+            }, 800); // 800ms延迟，模拟网络请求
+        }
+        
+        // 绑定搜索按钮点击事件
+        searchButton.addEventListener('click', performSearch);
+        
+        // 绑定搜索框回车事件
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    </script>
+</body>
+</html>

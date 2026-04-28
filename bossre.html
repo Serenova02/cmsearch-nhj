@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>职位详情</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a73e8, #174ea6);
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .header .salary {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FF4D4F;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .main-content {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 24px;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a73e8;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .job-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .job-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .job-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .job-meta-item i {
+            color: #1a73e8;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .tag {
+            background: #e3f2fd;
+            color: #1a73e8;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+        }
+        
+        .hr-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .hr-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #1a73e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .hr-details h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .hr-details p {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: #1a73e8;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1557b0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+        }
+        
+        .btn-outline {
+            background: white;
+            color: #1a73e8;
+            border: 1px solid #1a73e8;
+        }
+        
+        .btn-outline:hover {
+            background: #f0f7ff;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .section-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .section-content p {
+            margin-bottom: 12px;
+        }
+        
+        .section-content ul {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .section-content li {
+            margin-bottom: 8px;
+        }
+        
+        .company-info {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .company-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .company-info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .company-info-label {
+            color: #666;
+        }
+        
+        .map-section {
+            margin-bottom: 20px;
+        }
+        
+        .map-placeholder {
+            width: 100%;
+            height: 200px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .related-jobs {
+            margin-top: 30px;
+        }
+        
+        .job-card {
+            padding: 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .job-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .job-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .job-card-meta {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .main-content {
+                padding: 16px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .job-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+        
+        .urgent-tag {
+            background: #ff4d4f;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        
+        .highlight {
+            color: #ff4d4f;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>店铺孵化专员 / 供应链对接（无经验可投）</h1>
+            <div class="salary">6000-10000 元 / 月</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="job-info">
+                <div class="job-title">
+                    <span class="urgent-tag">急招</span>
+                    店铺孵化专员 / 供应链对接（无经验可投）
+                </div>
+                <div class="job-meta">
+                    <div class="job-meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        江南省・青溪市・新城区・科创大厦 1203 室
+                    </div>
+                    <div class="job-meta-item">
+                        <i class="fas fa-briefcase"></i>
+                        1 年以内 / 可应届生
+                    </div>
+                    <div class="job-meta-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        大专及以上
+                    </div>
+                </div>
+                <div class="tags">
+                    <span class="tag">急招</span>
+                    <span class="tag">无经验可带</span>
+                    <span class="tag">绩效提成</span>
+                    <span class="tag">室内办公</span>
+                </div>
+                <div class="hr-info">
+                    <div class="hr-avatar">周</div>
+                    <div class="hr-details">
+                        <h3>周明 | 运营总监</h3>
+                        <p><span class="highlight">🔥 急招提示：3 天内可面试，7 天内到岗</span></p>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-primary">立即沟通</a>
+                    <a href="#" class="btn btn-outline">收藏职位</a>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">岗位职责</h2>
+                <div class="section-content">
+                    <ul>
+                        <li>对接小红书开店新手，讲解代运营模式，引导签订服务协议</li>
+                        <li>协助店主完成身份信息备案、人脸核验等流程</li>
+                        <li>对接工厂供应链，跟进货品发货、库存、售后反馈</li>
+                        <li>安抚店主疑问，处理店铺运营及货品相关问题</li>
+                        <li>完成上级交代的其他店铺孵化相关工作</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">任职要求</h2>
+                <div class="section-content">
+                    <ul>
+                        <li>沟通顺畅，有耐心，能应对客户情绪</li>
+                        <li>对小红书、电商副业感兴趣，无经验可培训</li>
+                        <li>执行力强，服从安排，抗压能力好</li>
+                        <li>青溪市本地居住者优先</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">薪资与福利</h2>
+                <div class="section-content">
+                    <p>底薪 4000 + 签约提成 + 货源提成 + 全勤 300</p>
+                    <p>节日福利、岗前培训、晋升通道</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">联系方式</h2>
+                <div class="section-content">
+                    <p><strong>负责人：</strong>周明</p>
+                    <p><strong>联系电话：</strong>154-0006-2132</p>
+                    <p><strong>企业座机：</strong>0123-0000-8888</p>
+                    <p><strong>微信：</strong>zhoum888</p>
+                    <p><strong>工作时间：</strong>9:00-21:00</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <div class="company-info">
+                <h3>公司简介</h3>
+                <div class="section-content">
+                    <p>青溪市创星新媒体有限公司</p>
+                    <p>20-99 人｜互联网・电商运营</p>
+                    <p>专注小红书个人店铺孵化、货源供应链、店铺运营服务</p>
+                </div>
+            </div>
+            
+
+            
+            <div class="related-jobs">
+                <h3 class="section-title">相似职位</h3>
+                <div class="job-card">
+                    <h3>电商运营助理</h3>
+                    <div class="job-card-meta">
+                        薪资：5000-8000元/月 | 经验：应届生
+                    </div>
+                </div>
+                <div class="job-card">
+                    <h3>供应链专员</h3>
+                    <div class="job-card-meta">
+                        薪资：6000-10000元/月 | 经验：1年以内
+                    </div>
+                </div>
+                <div class="job-card">
+                    <h3>新媒体运营</h3>
+                    <div class="job-card-meta">
+                        薪资：7000-12000元/月 | 经验：1-3年
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>温馨提示：求职过程中请勿提前缴纳费用、提供敏感隐私信息，如发现违规行为请立即举报。</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青溪市-百度百科</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e1e4e8;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav a {
+            text-decoration: none;
+            color: #5f6368;
+            font-size: 14px;
+        }
+        
+        .nav a:hover {
+            color: #1a73e8;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .main-content {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .sidebar {
+            width: 140px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .city-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .city-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        .info-table th,
+        .info-table td {
+            padding: 8px 12px;
+            border: 1px solid #e5e5e5;
+            text-align: left;
+        }
+        
+        .info-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            width: 120px;
+        }
+        
+        .section {
+            margin: 30px 0;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e5e5e5;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 30px;
+            background-color: #1a73e8;
+            border-radius: 2px;
+        }
+        
+        .subsection {
+            margin: 20px 0;
+        }
+        
+        .subsection-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        .text-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .list-item {
+            margin: 10px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .list-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #1a73e8;
+        }
+        
+        .list-item strong {
+            color: #1a73e8;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .sidebar-list {
+            list-style: none;
+        }
+        
+        .sidebar-list li {
+            margin: 8px 0;
+        }
+        
+        .sidebar-list a {
+            text-decoration: none;
+            color: #1a73e8;
+            font-size: 13px;
+        }
+        
+        .sidebar-list a:hover {
+            text-decoration: underline;
+        }
+        
+        .related-links {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e5e5;
+        }
+        
+        .related-links-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .related-links-list {
+            list-style: none;
+        }
+        
+        .related-links-list li {
+            margin: 8px 0;
+        }
+        
+        .related-links-list a {
+            text-decoration: none;
+            color: #1a73e8;
+            font-size: 13px;
+        }
+        
+        .related-links-list a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .info-table th {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">百度百科</div>
+            <div class="nav">
+                <a href="#">首页</a>
+                <a href="#">分类</a>
+                <a href="#">特色词条</a>
+                <a href="#">百科商城</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="main-content">
+            <h1 class="city-name">青溪市</h1>
+            <div class="city-description">
+                青溪市，是江南省下辖县级市，由青云市代管，位于江南省北部、青溪河中下游，地处太湖流域南岸，是江南省重要的电商产业基地、轻工制造基地与生态文化旅游城市，素有 "江南水乡・溪韵之城" 的美誉。全市总面积约 1126 平方千米，截至 2025 年末，常住人口 48.7 万人，城镇化率 62.3%。
+            </div>
+            
+            <div class="section" id="basic-info">
+                <h2 class="section-title">基本信息</h2>
+                <table class="info-table">
+                    <tr>
+                        <th>中文名</th>
+                        <td>青溪市</td>
+                    </tr>
+                    <tr>
+                        <th>外文名</th>
+                        <td>Qingxi City</td>
+                    </tr>
+                    <tr>
+                        <th>行政区划类别</th>
+                        <td>县级市</td>
+                    </tr>
+                    <tr>
+                        <th>所属地区</th>
+                        <td>江南省</td>
+                    </tr>
+                    <tr>
+                        <th>代管地级市</th>
+                        <td>青云市</td>
+                    </tr>
+                    <tr>
+                        <th>下辖地区</th>
+                        <td>3 个街道、5 个镇（新城街道、滨河街道、溪南街道、万和镇、溪北镇、新塍镇、联丰镇、启盛镇）</td>
+                    </tr>
+                    <tr>
+                        <th>政府驻地</th>
+                        <td>新城区府前路 88 号</td>
+                    </tr>
+                    <tr>
+                        <th>电话区号</th>
+                        <td>0503</td>
+                    </tr>
+                    <tr>
+                        <th>邮政区码</th>
+                        <td>30018</td>
+                    </tr>
+                    <tr>
+                        <th>地理位置</th>
+                        <td>江南省北部，青溪河下游，东接泽湖市，南连青云市区，西临云清县，北靠云湖流域</td>
+                    </tr>
+                    <tr>
+                        <th>面积</th>
+                        <td>1126 km²</td>
+                    </tr>
+                    <tr>
+                        <th>人口</th>
+                        <td>48.7 万（2025 年常住人口）</td>
+                    </tr>
+                    <tr>
+                        <th>方言</th>
+                        <td>青溪话</td>
+                    </tr>
+                    <tr>
+                        <th>气候条件</th>
+                        <td>亚热带季风气候</td>
+                    </tr>
+                    <tr>
+                        <th>市树</th>
+                        <td>香樟树</td>
+                    </tr>
+                    <tr>
+                        <th>市花</th>
+                        <td>桂花</td>
+                    </tr>
+                    <tr>
+                        <th>地区生产总值</th>
+                        <td>328.6 亿元（2025 年）</td>
+                    </tr>
+                    <tr>
+                        <th>人均地区生产总值</th>
+                        <td>67474 元（2025年）</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="section" id="history">
+                <h2 class="section-title">历史沿革</h2>
+                <div class="text-content">
+                    青溪地域历史悠久，先秦时期属会稽郡，为吴越文化重要辐射区域；隋唐时期设青溪驿，作为江南水路交通要道，是南北商贸往来的重要节点，当时已形成小型集镇，以纺织、航运为主要产业；宋元时期，随着江南地区经济崛起，青溪集镇规模扩大，出现了书院、寺庙等文化设施，<strong>万和寺</strong>即始建于明万历年间（1573-1620 年）；明清时期，青溪属嘉兴府管辖，成为江南水乡重要的商贸集镇，手工业（竹编、糕点制作）日趋发达，青溪竹编、溪南糕点成为当时远近闻名的特产；
+                </div>
+                <div class="text-content">
+                    1949 年，新中国成立后设青溪县，隶属嘉兴专区；1958 年，青溪县并入青云市，改为青溪区；1998 年，经国务院批准，撤区设市，设立县级青溪市，由青云市代管，逐步形成以轻工制造、商贸流通为核心的产业格局；2010 年后，随着互联网产业兴起，青溪市重点发展新媒体电商、供应链管理等新兴产业，成为江南省县级电商示范城市。
+                </div>
+            </div>
+            
+            <div class="section" id="administrative-division">
+                <h2 class="section-title">行政区划</h2>
+                <div class="text-content">
+                    截至 2025 年，青溪市辖 3 个街道、5 个镇，共 68 个行政村、23 个社区，市政府驻新城街道。
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">街道</h3>
+                    <div class="list-item">
+                        <strong>新城街道：</strong>青溪市政治、经济、文化核心区域，辖区内有市级行政中心、电商科创产业园、新城中央公园等，是新媒体电商、总部经济聚集区，常住人口 12.3 万人。
+                    </div>
+                    <div class="list-item">
+                        <strong>滨河街道：</strong>位于青溪河南岸，以老城区风貌为特色，辖区内有青溪老街、滨河公园等景点，传统手工业、特色餐饮集中，常住人口 9.8 万人。
+                    </div>
+                    <div class="list-item">
+                        <strong>溪南街道：</strong>地处青溪市南部，以生态农业、轻工业为主，辖区内有多个农产品种植基地、纺织加工厂，常住人口 7.2 万人。
+                    </div>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">镇</h3>
+                    <div class="list-item">
+                        <strong>万和镇：</strong>位于青溪市西部，以生态文旅、佛教文化为特色，境内有万和山、万和寺等核心景点，是青溪市重点文旅乡镇，常住人口 4.5 万人。
+                    </div>
+                    <div class="list-item">
+                        <strong>溪北镇：</strong>位于青溪河以北，地势平坦，以现代农业、物流仓储为主，境内有青溪河湿地公园，常住人口 5.1 万人。
+                    </div>
+                    <div class="list-item">
+                        <strong>新塍镇：</strong>地处青溪市东南部，以轻工制造、五金加工为支柱产业，拥有多个工业园区，常住人口 4.7 万人。
+                    </div>
+                    <div class="list-item">
+                        <strong>联丰镇：</strong>位于青溪市东北部，以粮油种植、农产品加工为主，是青溪市重要的农业乡镇，常住人口 3.6 万人。
+                    </div>
+                    <div class="list-item">
+                        <strong>启盛镇：</strong>地处青溪市西南部，毗邻德清县，以建材制造、物流运输为核心产业，常住人口 1.5 万人。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="geography">
+                <h2 class="section-title">地理环境</h2>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">位置境域</h3>
+                    <div class="text-content">
+                        青溪市地处江南省北部平原，介于东经 120°58′-121°25′、北纬 30°45′-31°12′之间，东接泽湖市，南连青云市区，西临云清县，北靠云湖流域，距离青云市区 35 千米，地理位置优越。
+                    </div>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">地形地貌</h3>
+                    <div class="text-content">
+                        青溪市地势平坦，以平原为主，平均海拔 3.5 米，境内仅有少量低山丘陵，主要分布在西部万和镇，其中万和山为境内最高峰，海拔 128 米，山体植被覆盖率达 92%，是青溪市重要的生态屏障。境内河网密布，青溪河自南向北贯穿全境，支流纵横交错，形成了典型的江南水乡地貌。
+                    </div>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">水文</h3>
+                    <div class="text-content">
+                        境内主要河流为青溪河，全长 42 千米，流域面积 860 平方千米，是青溪市的母亲河，自南向北流经溪南街道、滨河街道、新城街道、溪北镇，最终汇入云湖。此外，境内还有支流 12 条，总通航里程 32 公里，是历史上重要的水运通道，如今仍承担着部分货运、旅游航运功能。
+                    </div>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">气候</h3>
+                    <div class="text-content">
+                        青溪市属亚热带季风气候，四季分明，雨量充沛，光照充足，无霜期长。年平均气温 16.5℃，夏季平均气温 28.3℃，冬季平均气温 4.2℃；年平均降水量 1280 毫米，主要集中在 6-7 月梅雨季节和 9-10 月台风季节；年平均日照时数 1920 小时，无霜期约 240 天，适宜农作物生长和生态旅游发展。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="economy">
+                <h2 class="section-title">经济</h2>
+                <div class="text-content">
+                    青溪市坚持 "生态立市、产业强市、文旅兴市" 的发展战略，形成以新媒体电商、轻工制造、生态文旅、现代供应链为支柱的产业体系，是江南省县级电商示范城市，2025 年实现地区生产总值 328.6 亿元，同比增长 6.8%。
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">支柱产业</h3>
+                    <div class="list-item">
+                        <strong>新媒体电商：</strong>青溪市重点发展领域，建有市级电商科创产业园（位于新城街道），聚集了各类新媒体运营、品牌孵化、短视频电商企业 200 余家，涵盖饰品、美妆、农产品等多个品类，2025 年电商交易额突破 180 亿元，带动就业 1.2 万人。
+                    </div>
+                    <div class="list-item">
+                        <strong>轻工制造：</strong>传统支柱产业，主要包括纺织、五金、智能家居、首饰加工等品类，拥有规模以上企业 86 家，产品远销海外地区，2025年轻工制造产业产值达 110 亿元。其中，首饰加工产业主要集中在新塍镇、万和镇，形成了从原料采购、加工生产到销售的完整产业链。
+                    </div>
+                    <div class="list-item">
+                        <strong>生态文旅：</strong>依托江南水乡风貌、佛教文化资源，打造了万和寺、青溪老街、青溪河湿地公园等特色文旅景点，2025 年接待游客 150 万人次，旅游总收入达 18.6 亿元。
+                    </div>
+                    <div class="list-item">
+                        <strong>现代供应链：</strong>依托优越的地理位置，发展仓储、分销、物流一体化服务，建有 2 个大型物流园区，重点服务电商、轻工制造产业，2025 年供应链产业产值达 45 亿元。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="transportation">
+                <h2 class="section-title">交通</h2>
+                <div class="text-content">
+                    青溪市交通便捷，形成了 "公路、水运、公共交通" 三位一体的交通网络，便于人员往来和货物运输，是江南省北部重要的交通枢纽之一。
+                </div>
+            </div>
+            
+            <div class="section" id="culture">
+                <h2 class="section-title">文化</h2>
+                <div class="text-content">
+                    青溪市为江南水乡文化重要节点，融合了吴越文化、佛教文化、民俗文化等特色，保留了丰富的文化遗产和民俗风情，文化底蕴深厚。
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">非物质文化遗产</h3>
+                    <div class="text-content">
+                        青溪市拥有市级非物质文化遗产 3 项，区级非物质文化遗产 8 项，其中最具代表性的有：
+                    </div>
+                    <div class="list-item">
+                        <strong>青溪竹编：</strong>历史悠久，始于明清时期，以本地毛竹为原料，经选料、破篾、编织等多道工序制成，产品涵盖竹篮、竹筐、竹编工艺品等，工艺精湛，兼具实用性与观赏性，2010 年被列入江南省市级非物质文化遗产名录。
+                    </div>
+                    <div class="list-item">
+                        <strong>溪南糕点制作技艺：</strong>传承百年，以糯米、面粉、桂花、芝麻等为原料，采用古法工艺制作，代表产品有桂花糕、定胜糕、酥糖等，口感清甜，香气浓郁，是青溪市传统特色美食，常用于节日庆典、亲友馈赠。
+                    </div>
+                    <div class="list-item">
+                        <strong>水乡社戏：</strong>流行于青溪市滨河街道、溪北镇等水乡区域，每年农历三月初三、六月初六等传统节日，当地村民会邀请戏班在古戏台演出越剧、昆曲等戏曲，传承至今已有 200 余年历史，是江南水乡民俗文化的重要体现。
+                    </div>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">宗教文化</h3>
+                    <div class="text-content">
+                        青溪市宗教文化以佛教为主，境内佛教活动场所众多，其中<strong>万和寺</strong>为本地最具影响力的佛教活动场所，也是江南地区保存较完整的明清佛寺建筑之一。此外，境内还有小型佛教寺庙 3 座、道教宫观 1 座，宗教活动有序开展，成为本地文化的重要组成部分。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="scenic-spots">
+                <h2 class="section-title">风景名胜</h2>
+                <div class="text-content">
+                    青溪市依托江南水乡风貌、佛教文化、生态资源，打造了多个特色风景名胜区，既有自然景观，也有人文景观，是休闲观光、祈福度假的理想目的地。
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">万和寺</h3>
+                    <div class="text-content">
+                        位于万和镇万和山半山腰，始建于明万历年间，距今已有 400 余年历史，2018 年由本地企业家盛建国捐资牵头完成整体修缮工程，同步建成登山步道、游客服务中心、停车场等配套设施，2020 年被评为江南省 AAA 级旅游景区。寺内保存有明清古碑 3 通、大雄宝殿、藏经阁、万和塔等景观，其中万和塔高 36 米，共 7 层，登顶可俯瞰万和镇全景及青溪河风光；寺后为万和生态林，植被茂密，空气清新，是市民、游客登山祈福、休闲健身的好去处。寺内设有功德碑，记录了修缮捐资情况及捐赠者信息，每年农历四月初八举办庙会，香火旺盛。
+                    </div>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">青溪老街</h3>
+                    <div class="text-content">
+                        位于滨河街道青溪河南岸，全长 1.2 千米，保留了历史水乡民居、石板路、古桥等建筑风貌，街道两侧商铺林立，汇集了青溪竹编、溪南糕点、青溪米酒等本地特色产品，还有茶馆、文创小店、特色餐饮等，充满江南水乡的烟火气。每年春节、中秋等传统节日，老街会举办民俗活动，吸引大量游客前来打卡。
+                    </div>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">青溪河湿地公园</h3>
+                    <div class="text-content">
+                        位于溪北镇青溪河北岸，占地面积 1200 亩，是青溪市最大的城市湿地公园，以青溪河为核心，打造了湿地景观、亲水平台、休闲步道、候鸟栖息地等区域，种植了荷花、芦苇、垂柳等水生植物，是市民休闲健身、观鸟赏景的好去处。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="famous-people">
+                <h2 class="section-title">著名人物</h2>
+                
+                <div class="list-item">
+                    <strong>陈清溪（1580-1645 年）：</strong>明万历年间文人，青溪市万和镇人，自幼聪慧，擅长诗文，著有《青溪风物记》《万和山志》等作品，记录了青溪市的山水风光、民俗风情、佛教文化，为研究青溪历史文化提供了重要资料。
+                </div>
+                <div class="list-item">
+                    <strong>盛建国（1965 年 - ）：</strong>青溪市本土企业家，盛联集团董事长，出生于青溪市启盛镇，深耕本地产业发展数十年，牵头推动轻工制造、新媒体电商、生态文旅等产业升级，捐资修缮万和寺、建设乡村公路、资助贫困学生，为青溪市经济社会发展和公益事业作出了重要贡献，是青溪市知名企业家、慈善家。
+                </div>
+                <div class="list-item">
+                    <strong>沈竹君（1912-1998 年）：</strong>青溪市滨河街道人，著名竹编艺人，自幼学习青溪竹编工艺，一生致力于竹编技艺的传承与创新，改进了传统竹编工艺，创作了大量竹编精品，培养了多名竹编传承人，推动了青溪竹编的发展。
+                </div>
+            </div>
+            
+            <div class="section" id="city-honors">
+                <h2 class="section-title">城市荣誉</h2>
+                <div class="text-content">
+                    江南省文明城市、江南省电商示范县（市）、江南省文明城市、江南省生态旅游城市、省级卫生城市、省级园林城市、中国竹编之乡（特色产业荣誉）
+                </div>
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">快速导航</h3>
+                <ul class="sidebar-list">
+                    <li><a href="#basic-info">基本信息</a></li>
+                    <li><a href="#history">历史沿革</a></li>
+                    <li><a href="#administrative-division">行政区划</a></li>
+                    <li><a href="#geography">地理环境</a></li>
+                    <li><a href="#economy">经济</a></li>
+                    <li><a href="#transportation">交通</a></li>
+                    <li><a href="#culture">文化</a></li>
+                    <li><a href="#scenic-spots">风景名胜</a></li>
+                    <li><a href="#famous-people">著名人物</a></li>
+                    <li><a href="#city-honors">城市荣誉</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 平滑滚动功能
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // 减去头部高度，避免被遮挡
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

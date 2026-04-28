@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创星新媒体有限公司 - 企查查</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background-color: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav {
+            width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            color: #ff6600;
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 30px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-right: 20px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .nav-links a:hover {
+            color: #ff6600;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            padding: 0 10px;
+            margin-right: 20px;
+        }
+        
+        .search-input {
+            border: none;
+            outline: none;
+            padding: 8px;
+            width: 200px;
+        }
+        
+        .search-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .login-btn {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .container {
+            width: 1200px;
+            margin: 20px auto;
+        }
+        
+        .company-header {
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .company-top {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            justify-content: space-between;
+        }
+        
+        .company-top-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .company-avatar {
+            width: 60px;
+            height: 60px;
+            background-color: #f8d7da;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .avatar-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .company-name-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .company-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 10px;
+            color: #333;
+        }
+        
+        .status-tag {
+            background-color: #52c41a;
+            color: white;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 2px;
+        }
+        
+        .company-score {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        
+        .score-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .score-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-right: 5px;
+        }
+        
+        .company-actions {
+            display: flex;
+        }
+        
+        .action-btn {
+            border: 1px solid #d9d9d9;
+            background-color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+        
+        .action-btn:hover {
+            border-color: #ff6600;
+            color: #ff6600;
+        }
+        
+        .follow-btn {
+            background-color: #ff6600;
+            color: white;
+            border-color: #ff6600;
+        }
+        
+        .company-subtag {
+            margin-bottom: 15px;
+        }
+        
+        .subtag {
+            background-color: #e6f7ff;
+            color: #1890ff;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 2px;
+        }
+        
+        .company-info {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .info-left {
+            flex: 1;
+            margin-right: 20px;
+        }
+        
+        .info-right {
+            flex: 1;
+        }
+        
+        .company-info p {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .company-info .info-label {
+            font-weight: normal;
+            color: #666;
+            margin-right: 8px;
+        }
+        
+        .company-info .info-value {
+            color: #333;
+        }
+        
+        .info-link {
+            color: #1890ff;
+            text-decoration: none;
+        }
+        
+        .info-link:hover {
+            text-decoration: underline;
+        }
+        
+        .company-brief {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .company-brief p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .brief-label {
+            color: #666;
+            margin-right: 8px;
+        }
+        
+        .brief-content {
+            color: #333;
+        }
+        
+        .expand-link {
+            color: #1890ff;
+            text-decoration: none;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        
+        .company-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            font-size: 12px;
+            color: #999;
+            margin-right: 15px;
+            margin-bottom: 5px;
+        }
+        
+        .copy-btn {
+            background-color: white;
+            border: 1px solid #d9d9d9;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .copy-btn:hover {
+            border-color: #ff6600;
+            color: #ff6600;
+        }
+        
+        .vip-lock-modal {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: 4px;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            height: 80%;
+            max-height: 360px;
+            z-index: 10;
+        }
+        
+        .vip-lock-header {
+            background-color: #ff6600;
+            color: white;
+            padding: 10px;
+            border-radius: 4px 4px 0 0;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .vip-lock-header h3 {
+            margin: 0;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .vip-plans {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .vip-plan {
+            flex: 1;
+            background-color: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+            margin: 0 5px;
+        }
+        
+        .vip-plan.recommended {
+            border-color: #ff6600;
+            background-color: #fff9f0;
+        }
+        
+        .plan-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .plan-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff6600;
+            margin-bottom: 5px;
+        }
+        
+        .plan-desc {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .vip-payment {
+            margin-bottom: 15px;
+        }
+        
+        .payment-option {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .payment-option input {
+            margin-right: 8px;
+        }
+        
+        .vip-terms {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        .vip-terms input {
+            margin-right: 8px;
+        }
+        
+        .vip-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .total-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff6600;
+        }
+        
+        .vip-pay-btn {
+            width: 100%;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .vip-pay-btn:hover {
+            background-color: #ff8533;
+        }
+        
+        .blurred-records {
+            margin-top: 20px;
+        }
+        
+        .blurred-record {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        
+        .record-item {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .record-item.blurred {
+            filter: blur(4px);
+            -webkit-filter: blur(4px);
+        }
+        
+        .section {
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .anomaly-section {
+            position: relative;
+            min-height: 500px;
+            padding: 40px 20px;
+        }
+        
+        .vip-banner {
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            border-left: 4px solid #ff6600;
+            padding-left: 10px;
+        }
+        
+        .info-list {
+            list-style: none;
+        }
+        
+        .info-item {
+            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .info-label {
+            font-weight: normal;
+            margin-right: 10px;
+            min-width: 120px;
+            color: #666;
+        }
+        
+        .info-value {
+            flex: 1;
+            color: #333;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        th {
+            background-color: #f9f9f9;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .risk-alert {
+            background-color: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        
+        .risk-item {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .risk-item::before {
+            content: "!";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background-color: #ff6600;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 12px;
+            line-height: 16px;
+        }
+        
+        .footer {
+            background-color: #fff;
+            border-top: 1px solid #e5e5e5;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+        
+        .footer-content {
+            width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .footer-content p {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 1200px) {
+            .nav, .container, .footer-content {
+                width: 95%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .search-input {
+                width: 150px;
+            }
+            
+            .info-label {
+                min-width: 100px;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="nav">
+            <div class="nav-left">
+                <div class="logo">企查查</div>
+                <ul class="nav-links">
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">查公司</a></li>
+                    <li><a href="#">查老板</a></li>
+                    <li><a href="#">查风险</a></li>
+                    <li><a href="#">查商标</a></li>
+                    <li><a href="#">查专利</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="搜索公司、老板、商标">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <button class="login-btn">登录</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="company-header">
+            <div class="company-top">
+                <div class="company-top-left">
+                    <div class="company-avatar">
+                        <span class="avatar-text">创星</span>
+                    </div>
+                    <div class="company-name-container">
+                        <h1 class="company-name">创星新媒体有限公司</h1>
+                        <span class="status-tag">存续</span>
+                    </div>
+                </div>
+                <div class="company-score">
+                    <span class="score-label">企业评分：</span>
+                    <span class="score-value">77分</span>
+                </div>
+            </div>
+            <div class="company-subtag">
+                <span class="subtag">小微企业</span>
+            </div>
+            <div class="company-info">
+                <div class="info-left">
+                    <p><span class="info-label">统一社会信用代码：</span><span class="info-value">913046MA2L8P0K7R</span></p>
+                    <p><span class="info-label">法定代表人：</span><a href="#" class="info-link">张磊</a></p>
+                    <p><span class="info-label">注册资本：</span><span class="info-value">100万元人民币</span></p>
+                    <p><span class="info-label">成立日期：</span><span class="info-value">2024-03-15</span></p>
+                </div>
+                <div class="info-right">
+                    <p><span class="info-label">电话：</span><span class="info-value">0123-0000-8888</span></p>
+                    <p><span class="info-label">邮箱：</span><span class="info-value">chuangxing@slqx-group.com</span></p>
+                    <p><span class="info-label">地址：</span><span class="info-value">江南省青溪市新城区A科创园 科创大厦1203室</span></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">企业概况</h2>
+            <ul class="info-list">
+                <li class="info-item">
+                    <span class="info-label">登记机关：</span>
+                    <span class="info-value">青溪市市场监督管理局新城区分局</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">企业类型：</span>
+                    <span class="info-value">有限责任公司（自然人投资或控股）</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">经营状态：</span>
+                    <span class="info-value">存续</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">经营范围：</span>
+                    <span class="info-value">一般项目：新媒体运营；电商代运营；供应链管理服务；互联网销售（除需要许可的商品）；广告设计、代理；品牌孵化；创业指导服务；首饰、饰品销售（除依法须经批准的项目外，凭营业执照依法自主开展经营活动）</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">所属行业：</span>
+                    <span class="info-value">互联网和相关服务</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">参保人数：</span>
+                    <span class="info-value">6人</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">公示日期：</span>
+                    <span class="info-value">2026-02-10</span>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">股东及出资信息</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>股东名称</th>
+                        <th>持股比例</th>
+                        <th>认缴出资额</th>
+                        <th>认缴日期</th>
+                        <th>实缴情况</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>周明</td>
+                        <td>80%</td>
+                        <td>80 万元</td>
+                        <td>2026-05-15</td>
+                        <td>未实缴</td>
+                    </tr>
+                    <tr>
+                        <td>张磊</td>
+                        <td>20%</td>
+                        <td>20 万元</td>
+                        <td>2026-05-15</td>
+                        <td>未实缴</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">主要人员（含公开履历）</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>职务</th>
+                        <th>公开履历</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>张磊</td>
+                        <td>法定代表人、监事</td>
+                        <td>2020-2023 任职于：青溪启盛投资有限公司</td>
+                    </tr>
+                    <tr>
+                        <td>周明</td>
+                        <td>执行董事、总经理</td>
+                        <td>无外部公开履历</td>
+                    </tr>
+                    <tr>
+                        <td>宋丽</td>
+                        <td>财务负责人</td>
+                        <td>2021-2024 任职于：青溪联投有限公司 财务部</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">工商变更记录</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>变更日期</th>
+                        <th>变更项目</th>
+                        <th>变更前</th>
+                        <th>变更后</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-04-10</td>
+                        <td>股东变更</td>
+                        <td>青溪启盛投资有限公司（100%）</td>
+                        <td>周明(80%)、张磊 (20%)</td>
+                    </tr>
+                    <tr>
+                        <td>2024-06-10</td>
+                        <td>地址变更</td>
+                        <td>青溪市滨河路88号</td>
+                        <td>A 科创园科创大厦 1203 室</td>
+                    </tr>
+                    <tr>
+                        <td>2024-08-02</td>
+                        <td>经营范围</td>
+                        <td>新媒体运营、广告设计、代理</td>
+                        <td>新增：供应链管理服务、首饰、饰品销售</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">资质许可信息</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>资质类型</th>
+                        <th>许可证/ 备案号</th>
+                        <th>归属/ 备案信息</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>营业执照</td>
+                        <td>913046MA2L8P0K7R</td>
+                        <td>青溪市市场监督管理局</td>
+                        <td>有效</td>
+                    </tr>
+                    <tr>
+                        <td>ICP备案</td>
+                        <td>江ICP备 2024020123 号</td>
+                        <td>集团级统一备案</td>
+                        <td>有效</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">关联企业信息</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>关联企业名称</th>
+                        <th>关联关系</th>
+                        <th>经营状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>青溪市创星供应链有限公司</td>
+                        <td>周明100%控股</td>
+                        <td>存续</td>
+                    </tr>
+                    <tr>
+                        <td>青溪市安福饰品加工坊</td>
+                        <td>人员关联、供货关联</td>
+                        <td>存续</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">行政处罚信息</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>处罚日期</th>
+                        <th>处罚事由</th>
+                        <th>处罚机关</th>
+                        <th>处罚结果</th>
+                        <th>履行状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-11-08</td>
+                        <td>对外宣传夸大服务规模、盈利预期，构成虚假宣传</td>
+                        <td>青溪市市场监督管理局新城区分局</td>
+                        <td>罚款2000元，限期整改</td>
+                        <td>已履行</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section anomaly-section">
+            <h2 class="section-title">经营异常& 严重违法信息</h2>
+            <div class="vip-lock-modal">
+                <div class="vip-lock-header">
+                    <h3>该信息需要VIP才能解锁</h3>
+                </div>
+                <div class="vip-lock-content">
+                    <div class="vip-plans">
+                        <div class="vip-plan recommended">
+                            <div class="plan-title">3年VIP</div>
+                            <div class="plan-price">¥854</div>
+                            <div class="plan-desc">每天仅0.78元</div>
+                        </div>
+                        <div class="vip-plan">
+                            <div class="plan-title">2年VIP</div>
+                            <div class="plan-price">¥640</div>
+                            <div class="plan-desc">每天仅0.88元</div>
+                        </div>
+                        <div class="vip-plan">
+                            <div class="plan-title">1年VIP</div>
+                            <div class="plan-price">¥360</div>
+                            <div class="plan-desc">每天仅0.98元</div>
+                        </div>
+                    </div>
+                    <div class="vip-total">
+                        <span>实付金额：</span>
+                        <span class="total-price">¥854</span>
+                    </div>
+                    <button class="vip-pay-btn">立即订购</button>
+                </div>
+            </div>
+            <div class="blurred-records">
+                <div class="blurred-record">
+                    <div class="record-item blurred">经营异常信息1：XXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+                    <div class="record-item blurred">经营异常信息2：XXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+                    <div class="record-item blurred">经营异常信息3：XXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+                    <div class="record-item blurred">经营异常信息4：XXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+                    <div class="record-item blurred">经营异常信息5：XXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+                    <div class="record-item blurred">严重违法信息1：XXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+                    <div class="record-item blurred">严重违法信息2：XXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+                    <div class="record-item blurred">严重违法信息3：XXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+                    <div class="record-item blurred">严重违法信息4：XXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+                    <div class="record-item blurred">严重违法信息5：XXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">2025年度企业年报公示</h2>
+            <ul class="info-list">
+                <li class="info-item">
+                    <span class="info-label">从业人数：</span>
+                    <span class="info-value">6人</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">营业收入：</span>
+                    <span class="info-value">企业选择不公示</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">净利润：</span>
+                    <span class="info-value">企业选择不公示</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">纳税总额：</span>
+                    <span class="info-value">企业选择不公示</span>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">智能风险提示</h2>
+            <div class="risk-alert">
+                <div class="risk-item">1. 股权变更异常：企业成立初期由法人投资机构全资控股，短期内转为自然人持股，存在股权代持、风险隔离嫌疑。</div>
+                <div class="risk-item">2. 关联集群风险：企业在地址、电话、域名、供应链、人员履历等维度，与青溪本地同一大型商业集团存在多重深度关联。</div>
+                <div class="risk-item">3. 实际控制人提示：表面由周明控股运营，疑似受外部集团统一管理，非独立市场化运营主体。</div>
+                <div class="risk-item">4. 出资风险：股东均未实缴注册资本，公司资金实力薄弱。</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="footer-content">
+            <p>信息来源：国家企业信用信息公示系统、青溪市市场监督管理局、公开信息整理</p>
+            <p>免责声明：本页面信息仅供参考，不构成投资建议，平台不对信息真实性承担责任</p>
+            <p>©2014-2026 企查查版权所有  江ICP备01200123号</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>柰花集失踪案 - 网页侦探</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        /* 人设页样式 */
+        .character-page {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #F5F5F7;
+            border: 8px solid #E1E1E3;
+            position: relative;
+            padding: 20px;
+            backdrop-filter: blur(2px);
+        }
+
+        .character-page::before, .character-page::after {
+            content: "";
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .character-page::before {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2386868B'%3E%3Cpath d='M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-8 17l-5-5 1.41-1.41L11 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E") no-repeat center;
+            top: 10%;
+            left: 10%;
+        }
+
+        .character-page::after {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2386868B'%3E%3Cpath d='M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 12H8v-2h4v2zm0-4H8V7h4v4z'/%3E%3C/svg%3E") no-repeat center;
+            bottom: 10%;
+            right: 10%;
+        }
+
+        .character-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1D1D1F;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .character-content {
+            font-size: 14px;
+            color: #3A3A3C;
+            line-height: 1.8;
+            text-align: center;
+            max-width: 600px;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .character-content br {
+            margin-bottom: 1em;
+        }
+
+        .btn {
+            width: 180px;
+            height: 45px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007AFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn:hover {
+            background-color: #0066CC;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transform: translateY(-1px);
+        }
+
+        .bottom-tip {
+            color: #86868B;
+            font-size: 12px;
+            font-style: italic;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 固定底部提示元素 */
+        .fixed-bottom-note {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            text-align: left;
+            padding: 20px 25px;
+            font-size: 15px;
+            color: #333;
+            font-family: "SimSun", serif;
+            font-style: italic;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: default;
+            z-index: 1000;
+        }
+
+        .fixed-bottom-note:hover {
+            transform: scale(1.03);
+        }
+
+        /* 淡入淡出动画 */
+        .fade-out {
+            animation: fadeOut 0.5s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="character-page" id="characterPage">
+        <div class="character-title">沉默搜索 ——「柰花集失踪案」</div>
+        <div class="character-content">
+            你是<strong>陈默</strong>，<br>
+            现实生活中的你，几乎“查无此人”；<br>
+            但屏幕前，你是嗅觉灵敏的“猎手”。<br>
+            作为一名不走寻常路的侦探，<br>
+            你的日常，<br>
+            就是在那些看似不起眼的海量信息碎片中大浪淘沙，<br>
+            一步步拼凑出被刻意掩埋的真相。<br><br>
+            人们总以为一键清空了历史记录，互联网就失去了记忆；<br>
+            但你知道，那不过是句自欺欺人的谎言；<br>
+            人会伪装，但数字痕迹永远坦诚。<br>
+            在这张巨大的网中，从来没有真正的“人间蒸发”；<br>
+            有的，只是尚未被触发的关键词。<br><br>
+            这天，你又收到了一个新的委托……
+        </div>
+        <button class="btn" id="startBtn">【开始本次委托】</button>
+        <div class="bottom-tip">点击按钮，进入你的电脑查看委托信息</div>
+    </div>
+
+    <div class="fixed-bottom-note">*本故事纯属虚构，如有雷同纯属巧合</div>
+
+    <script>
+        // 获取开始按钮元素
+        const startBtn = document.getElementById('startBtn');
+        const characterPage = document.getElementById('characterPage');
+
+        // 点击按钮跳转到桌面页
+        startBtn.addEventListener('click', function() {
+            // 标记从index.html跳转（满足desktop.html弹窗触发条件）
+            sessionStorage.setItem('fromStartPage', 'true');
+            // 添加淡出动画效果（可选，保留原有视觉体验）
+            characterPage.classList.add('fade-out');index
+            // 延迟跳转，让动画效果完整展示
+            setTimeout(() => {
+                window.location.href = 'desktop.html';
+            }, 500);
+        });
+        
+    </script>
+</body>
+</html>

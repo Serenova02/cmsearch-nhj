@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络违法犯罪举报</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "仿宋", "FangSong", serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #000;
+            color: #fff;
+            z-index: 1000;
+        }
+        
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+        
+        .navbar-item {
+            margin: 0 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .navbar-item:hover {
+            text-decoration: underline;
+        }
+        
+        /* 主要内容 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px 40px;
+            width: 100%;
+        }
+        
+        /* 核心标识区 */
+        .logo-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            /* 确保标题区宽度 = 下方两个区域宽度 + 中间间隔 */
+            width: 100%;
+        }
+        
+        .logo {
+            margin-right: 40px;
+        }
+        
+        .logo img {
+            width: 120px;
+            height: 120px;
+        }
+        
+        .logo-text h1 {
+            font-family: "小标宋", "XiaoBiaoSong", serif;
+            font-size: 24px;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+        
+        .logo-text p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        /* 主体内容区 */
+        .main-content {
+            display: flex;
+            gap: 30px; /* 恢复30px的中间间隔 */
+            margin-bottom: 40px;
+            width: 100%;
+            box-sizing: border-box;
+            /* 移除之前错误的负margin */
+            margin-left: 0;
+            margin-right: 0;
+        }
+        
+        /* 左侧举报表单区 */
+        .form-section {
+            flex: 6; /* 改为弹性占比，替代固定60% */
+            min-width: 0; /* 解决flex子元素宽度溢出问题 */
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            /* 移除之前错误的左右内边距 */
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+        
+        .form-title {
+            font-family: "黑体", "SimHei", sans-serif;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #0066cc;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-hint {
+            margin-left: 0;
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        .form-hint.red {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        
+        .form-checkbox {
+            margin-left: 0;
+        }
+        
+        .submit-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 10px;
+            background-color: #0066cc;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0052a3;
+        }
+        
+        .submit-hint {
+            text-align: center;
+            font-size: 12px;
+            color: #ff0000;
+            margin-top: -10px;
+        }
+        
+        .status-message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
+        }
+        
+        .status-success {
+            background-color: #e6f7ee;
+            color: #28a745;
+            border: 1px solid #95deaa;
+        }
+        
+        .status-error {
+            background-color: #fdecea;
+            color: #dc3545;
+            border: 1px solid #ffb3ad;
+        }
+        
+        /* 右侧反诈宣传区 */
+        .promotion-section {
+            flex: 4; 
+            min-width: 0; /* 解决flex子元素宽度溢出问题 */
+            background-color: #e6f0fa;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            /* 移除之前错误的左右内边距 */
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+        
+        .promotion-title {
+            font-family: "黑体", "SimHei", sans-serif;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .promotion-poster {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .promotion-poster img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+        }
+        
+        .safety-tips {
+            margin-bottom: 20px;
+        }
+        
+        .safety-tips p {
+            text-align: left;
+            text-indent: 0;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        
+        /* 底部信息区 */
+        .footer {
+            background-color: #000;
+            color: #fff;
+            padding: 30px 0;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            gap: 60px;
+        }
+        
+        .footer-item {
+            flex: 1;
+            font-size: 14px;
+        }
+        
+        .footer-item h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: normal;
+        }
+        
+        .footer-item p {
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        /* 结局弹窗样式 - 复古卷宗风 */
+        .ending-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none;
+        }
+        
+        .ending-content {
+            width: 620px;
+            padding: 50px 50px 35px;
+            background: #f2ebe0;
+            background-image:
+                linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px),
+                linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+            background-size: 20px 20px;
+            border-radius: 8px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 1px solid #d4c8b8;
+        }
+        
+        .ending-content::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            border-top: 1px solid #b9a896;
+            border-left: 1px solid #b9a896;
+            opacity: 0.6;
+        }
+        
+        .ending-title {
+            --after-content: "未破";
+            font-size: 28px;
+            color: #8c2c2c;
+            text-align: center;
+            margin-bottom: 28px;
+            padding-bottom: 18px;
+            border-bottom: 2px solid #d4c8b8;
+            letter-spacing: 2px;
+            font-weight: 900;
+            position: relative;
+            font-family: "SimSun", "FangSong", serif;
+        }
+        
+        .ending-title::after {
+            content: var(--after-content);
+            position: absolute;
+            bottom: -10px;
+            right: 50%;
+            transform: translateX(50%);
+            font-size: 12px;
+            background: #8c2c2c;
+            color: #f2ebe0;
+            padding: 2px 10px;
+            border-radius: 3px;
+        }
+        
+        .ending-text {
+            font-family: "SimSun", "FangSong", serif;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.8;
+            text-align: justify;
+            text-shadow: 0.5px 0.5px 0 rgba(0,0,0,0.05);
+            margin-bottom: 35px;
+        }
+        
+        .modal-btns {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+        }
+
+        .modal-btns:has(:nth-child(2)) {
+            gap: 30px;
+        }
+        
+        .modal-btn {
+            padding: 10px 25px;
+            font-family: "SimSun", serif;
+            font-size: 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .btn-end {
+            background: #8c2c2c;
+            color: #f2ebe0;
+            border-color: #702323;
+        }
+        
+        .btn-end:hover {
+            background: #702323;
+            box-shadow: 0 2px 8px rgba(140, 44, 44, 0.2);
+        }
+        
+        .btn-look {
+            background: #f9f6f0;
+            color: #8c2c2c;
+            border-color: #d4c8b8;
+        }
+        
+        .btn-look:hover {
+            background: #f0e9dd;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar-container {
+                flex-wrap: wrap;
+            }
+            
+            .navbar-item {
+                margin: 5px 10px;
+            }
+            
+            .container {
+                padding: 120px 15px 30px;
+            }
+            
+            .logo-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .form-section,
+            .promotion-section {
+                flex: 100%;
+            }
+            
+            .form-label {
+                width: 100%;
+                text-align: left;
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+            
+            .form-input {
+                width: 100%;
+            }
+            
+            .form-hint,
+            .form-checkbox {
+                margin-left: 0;
+            }
+            
+            .footer-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .footer-item {
+                margin-bottom: 20px;
+            }
+            
+            .ending-content {
+                width: 95%;
+                padding: 30px 25px 25px;
+            }
+            
+            .ending-title {
+                font-size: 24px;
+            }
+            
+            .ending-text {
+                font-size: 14px;
+            }
+            
+            .modal-btns {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .modal-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-item">首页</div>
+            <div class="navbar-item">警务公开</div>
+            <div class="navbar-item">反诈宣传</div>
+            <div class="navbar-item">网络举报</div>
+            <div class="navbar-item">警民互动</div>
+            <div class="navbar-item">联系我们</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- 核心标识区 -->
+        <div class="logo-section">
+            <div class="logo">
+                <img src="images/logo.png">
+            </div>
+            <div class="logo-text">
+                <h1>青溪市公安局网络违法犯罪举报通道（反诈专项）</h1>
+                <p>为严厉打击电信网络诈骗、非法获取公民个人信息、网络敲诈勒索等违法犯罪，切实保护公民财产安全与合法权益，青溪市公安局开设本加密反诈举报通道，实行受害人专属核验机制，全程加密、严格保密，有效线索将立即核查并依法从严惩处。</p>
+            </div>
+        </div>
+        
+        <!-- 主体内容区 -->
+        <div class="main-content">
+            <!-- 左侧举报表单区 -->
+            <div class="form-section">
+                <div class="form-title">网络违法犯罪举报信息填写</div>
+                <form id="report-form">
+                    <div class="form-group">
+                        <label class="form-label"><span style="color: #ff0000;">*</span>举报人姓名（必填）：</label>
+                        <input type="text" class="form-input" id="reporter-name" placeholder="请填写真实姓名">
+                        <div class="form-hint">请填写受害人真实姓名</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span style="color: #ff0000;">*</span>证据上传（必选）：</label>
+                        <div style="position: relative;">
+                            <input type="file" class="form-input" id="evidence-file" accept=".zip" style="display: none;">
+                            <div id="file-container" style="display: flex; align-items: center; border: 1px solid #ddd; border-radius: 4px; padding: 8px 12px; background-color: #f9f9f9;">
+                                <span id="file-name" style="flex: 1; display: none; font-family: 'Microsoft YaHei', '微软雅黑', sans-serif; font-size: 14px;">证据汇总.zip</span>
+                                <button type="button" id="file-btn" style="background-color: #0066cc; color: #fff; border: none; border-radius: 4px; padding: 6px 12px; cursor: pointer;">选择文件</button>
+                            </div>
+                        </div>
+                        <div class="form-hint">请上传证据压缩包（支持ZIP格式，单个文件不超过500MB），建议对含隐私信息的证据进行加密</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span style="color: #ff0000;">*</span>专属核验验证码（必填）：</label>
+                        <input type="text" class="form-input" id="verification-code" placeholder="请输入核验码">
+                        <div class="form-hint red">核验码为受害人预登记专属，用于身份核验，务必仔细核对</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span style="color: #ff0000;">*</span>声明（必选）：</label>
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="declaration">
+                            <label for="declaration"><strong>本人郑重承诺，所提交的举报信息及证据真实、合法、有效，无诬告陷害他人情形，自愿承担由此产生的法律责任。</strong></label>
+                        </div>
+                    </div>
+                    <button type="button" class="submit-btn" id="submit-btn">提交举报</button>
+                    <div class="submit-hint">提交后将无法修改，请仔细核对信息及证据</div>
+                    <div class="status-message status-success" id="success-message">
+                        ✅ 举报提交成功！证据已收录，警方将在24小时内启动核查，后续进展将通过您预留的方式反馈。
+                    </div>
+                    <div class="status-message status-error" id="error-message">
+                        ❌ 举报人姓名错误，请重新输入
+                    </div>
+                    <div class="status-message status-error" id="lock-message">
+                        ❌ 验证码核验失败，通道已临时锁定24小时，请稍后再试
+                    </div>
+                </form>
+            </div>
+            
+            <!-- 右侧反诈宣传区 -->
+            <div class="promotion-section">
+                <div class="promotion-title">全民反诈 共筑防线</div>
+                <div class="promotion-poster">
+                    <img src="images/haibao.png">
+                </div>
+                <div class="safety-tips">
+                    <p>1.本平台为青溪市公安局官方唯一网络举报通道，全程加密传输，严格保护举报人及受害人信息，严禁泄露举报内容及个人隐私，切实保障举报人安全；</p>
+                    <p>2.请提交真实、完整、有效的证据材料（如聊天记录、文件、照片等），虚假举报、诬告陷害将依法承担法律责任；</p>
+                    <p>3.若您遭受网络诈骗或相关违法犯罪侵害，除提交举报外，可拨打全民反诈热线96110咨询求助，紧急情况请拨打110；</p>
+                    <p>4.请勿通过非官方渠道提交举报信息，谨防二次诈骗，如发现虚假举报链接，请及时向警方反馈。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部信息区 -->
+    <div class="footer">
+        <div class="footer-container">
+            <div class="footer-item">
+                <h3>联系方式</h3>
+                <p>办公地址：青溪市公安局反诈支队</p>
+                <p>咨询电话：0011-08811（工作日 9:00-17:00）</p>
+                <p>反诈热线：96110（24小时畅通）</p>
+            </div>
+            <div class="footer-item">
+                <h3>官方声明</h3>
+                <p>本平台严格遵循《中华人民共和国人民警察法》《网络安全法》等相关规定，依法受理网络违法犯罪举报，坚决打击各类网络诈骗及违法犯罪行为，维护社会公共安全与公民合法权益。</p>
+            </div>
+            <div class="footer-item">
+                <h3>版权信息</h3>
+                <p>版权所有  ©青溪市公安局2023 保留所有权利</p>
+                <p>网站备案号：江公网安备011200号</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 结局弹窗 -->
+    <div class="ending-modal" id="ending-modal">
+        <div class="ending-content">
+            <h2 class="ending-title" id="ending-title">结局一：一步之遥</h2>
+            <div class="ending-text" id="ending-text">周明监测到云盘异常访问后，迅速销毁了原始记录、文件资料等关键证据，现有文件因缺少原始数据支撑，证据效力不足，无法达到法定立案条件。</div>
+            <div class="modal-btns">
+                <button class="modal-btn btn-end" id="ending-btn">结束游戏</button>
+                <button class="modal-btn btn-look" id="look-btn">再看看</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 初始化变量
+        let errorCount = 0;
+        const maxErrorCount = 3;
+        
+        // 从localStorage中获取核验码，与yunpan.html中的SOS.exe生成的核验码保持一致
+        let randomPassword = localStorage.getItem('sos_verification_code');
+        console.log('从localStorage获取的核验码:', randomPassword);
+        
+        // 获取元素
+        const submitBtn = document.getElementById('submit-btn');
+        const reporterName = document.getElementById('reporter-name');
+        const evidenceFile = document.getElementById('evidence-file');
+        const verificationCode = document.getElementById('verification-code');
+        const declaration = document.getElementById('declaration');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+        const lockMessage = document.getElementById('lock-message');
+        const fileBtn = document.getElementById('file-btn');
+        const fileName = document.getElementById('file-name');
+        const endingModal = document.getElementById('ending-modal');
+        const endingTitle = document.getElementById('ending-title');
+        const endingText = document.getElementById('ending-text');
+        const endingBtn = document.getElementById('ending-btn');
+        const lookBtn = document.getElementById('look-btn');
+        
+        // 隐藏所有状态消息
+        function hideAllMessages() {
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            lockMessage.style.display = 'none';
+        }
+        
+        // 点击选择文件按钮时，显示默认文件名并隐藏按钮
+        fileBtn.addEventListener('click', function() {
+            fileName.style.display = 'block';
+            fileBtn.style.display = 'none';
+        });
+        
+        // 结束游戏按钮，跳转至index.html
+        endingBtn.addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+        
+        // 再看看按钮，跳转到desktop.html并显示新闻弹窗
+        lookBtn.addEventListener('click', function() {
+            sessionStorage.setItem('fromFanzha', 'true');
+            window.location.href = 'desktop.html';
+        });
+        
+        // 提交表单处理
+        submitBtn.addEventListener('click', function() {
+            // 隐藏所有消息
+            hideAllMessages();
+            
+            // 检查表单完整性
+            if (!reporterName.value.trim()) {
+                alert('请填写举报人姓名');
+                return;
+            }
+            
+            if (!verificationCode.value.trim()) {
+                alert('请输入核验码');
+                return;
+            }
+            
+            if (!declaration.checked) {
+                alert('请勾选声明');
+                return;
+            }
+            
+            // 验证举报人和核验码
+            if (reporterName.value.trim() === '林茉' && verificationCode.value === randomPassword) {
+                // 验证成功
+                successMessage.style.display = 'block';
+                errorCount = 0; // 重置错误次数
+                
+                // 3秒后显示结局二
+                setTimeout(() => {
+                    endingTitle.textContent = '结局二：天网恢恢';
+                    endingText.textContent = '经对涉案云盘的完整证据检查，警方快速锁定周明为首的涉案团伙成员，实施抓捕并固定全部涉案证据。受害人林茉的人身安全得到保障，涉案人员将依法承担相应的法律责任。';
+                    // 修改结案文字为"结案"
+                    endingTitle.style.setProperty('--after-content', '"结案"');
+                    // 显示两个按钮
+                    endingBtn.style.display = 'block';
+                    lookBtn.style.display = 'block';
+                    endingModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden'; // 关闭滚动条
+                }, 3000);
+            } else if (reporterName.value.trim() !== '林茉') {
+                // 举报人错误，不限制次数
+                errorMessage.innerHTML = `❌ 举报人姓名错误，请重新输入`;
+                errorMessage.style.display = 'block';
+            } else {
+                // 核验码错误，一次失败就锁定通道
+                lockMessage.style.display = 'block';
+                
+                // 3秒后显示结局一
+                setTimeout(() => {
+                    endingTitle.textContent = '结局一：一步之遥';
+                    endingText.textContent = '周明监测到云盘异常访问后，迅速销毁了原始记录、文件资料等关键证据，现有文件因缺少原始数据支撑，证据效力不足，无法达到法定立案条件。';
+                    // 确保结局一显示"未破"
+                    endingTitle.style.setProperty('--after-content', '"未破"');
+                    // 只显示"结束游戏"按钮，隐藏"再看看"按钮
+                    endingBtn.style.display = 'block';
+                    lookBtn.style.display = 'none';
+                    endingModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden'; // 关闭滚动条
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

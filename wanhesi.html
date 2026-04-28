@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>万和寺</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+        
+        .article-header {
+            margin-bottom: 30px;
+        }
+        
+        .article-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        
+        .article-meta {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+        
+        .article-meta span {
+            margin-right: 15px;
+        }
+        
+        .article-content {
+            font-size: 16px;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        
+        .article-content p {
+            margin-bottom: 20px;
+        }
+        
+        .image-container {
+            margin: 25px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .image-caption {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .feature-tag {
+            display: inline-block;
+            background-color: #ff3b30;
+            color: #fff;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .feature-list {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        
+        .feature-list li {
+            margin-bottom: 10px;
+        }
+        
+        .special-recommendation {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        
+        .special-recommendation-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .prayer-button {
+            display: block;
+            background-color: #ff6b6b;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 30px 0;
+        }
+        
+        .prayer-button:hover {
+            background-color: #ee5a52;
+        }
+        
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e6e6e6;
+        }
+
+        /* 分割线核心样式 */
+        .divider-10 {
+            /* 使用vw单位控制上下间距，适配不同屏幕 */
+            margin: 6vw 0; 
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: auto;
+            /* 防止动画在移动端卡顿 */
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        .divider-10 .line {
+            /* 移动端线条宽度：小屏占比略小，保证菱形不挤 */
+            width: calc(50% - 20px); 
+            /* 线条粗细：移动端略细，更精致 */
+            height: 1px; 
+            background: #94a3b8;
+            /* 动画优化：移动端使用linear加速曲线，更流畅 */
+            animation: flash 1.5s infinite linear alternate;
+        }
+
+        .divider-10 .shape {
+            /* 菱形大小：使用px+固定值，保证小屏不模糊 */
+            width: 8px;  
+            height: 8px;
+            border: 1px solid #94a3b8;
+            transform: rotate(45deg);
+            /* 旋转动画：移动端适当加快，视觉效果更好 */
+            animation: spin 2.5s infinite linear;
+            /* 防止菱形被挤压 */
+            flex-shrink: 0;
+        }
+        /* 右侧线条延迟闪烁，交替效果 */
+        .divider-10 .line-right {
+            animation-delay: 0.75s;
+        }
+
+        /* ========== 动画定义（移动端优化版） ========== */
+        @keyframes flash {
+            0% { opacity: 0.2; } /* 移动端透明度对比更柔和 */
+            100% { opacity: 1; }
+        }
+        @keyframes spin {
+            0% { transform: rotate(45deg); }
+            100% { transform: rotate(405deg); }
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px 10px;
+            }
+            
+            .article-title {
+                font-size: 20px;
+            }
+            
+            .article-content {
+                font-size: 15px;
+            }
+
+            .divider-10 .shape {
+                width: 10px;
+                height: 10px;
+            }
+            .divider-10 .line {
+                width: calc(50% - 22px);
+                height: 1.5px;
+            }
+            .divider-10 {
+                margin: 30px 0; /* 大屏使用固定间距，更协调 */
+            }
+        }
+        
+        /* 阅读原文样式 */
+        .read-original {
+            margin: 30px 0;
+            padding: 15px 0;
+            border-bottom: 1px solid #e6e6e6;
+        }
+        
+        .read-original-link {
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 14px;
+            margin-right: 20px;
+        }
+        
+        .read-count {
+            color: #999;
+            font-size: 14px;
+        }
+        
+        /* 留言区样式 */
+        .comments-section {
+            margin-top: 30px;
+        }
+        
+        .comments-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .comments-count {
+            font-size: 14px;
+            font-weight: normal;
+            color: #999;
+            margin-left: 8px;
+        }
+        
+        .comment-input-container {
+            margin-bottom: 20px;
+            padding: 8px;
+            background-color: #e0dede;
+            border-radius: 8px;
+        }
+        
+        .comment-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .comments-list {
+            margin-top: 20px;
+        }
+        
+        .comment-item {
+            display: flex;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .comment-avatar {
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .avatar-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #999;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 12px;
+            color: #333;
+        }
+        
+        .comment-time {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .comment-text {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .comment-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .like-button {
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: #999;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .like-button:hover {
+            color: #ff6b6b;
+        }
+    </style>
+    <!-- 弹窗样式 -->
+    <style>
+        /* 弹窗背景 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 弹窗容器 */
+        .modal-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            background-image: url('images/qifu.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: translateY(-50px);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        /* 弹窗内容容器，增加背景色以确保内容清晰 */
+        .modal-body {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 0 0 12px 12px;
+        }
+        
+        /* 弹窗头部，增加背景色以确保标题清晰 */
+        .modal-header {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+        }
+        
+        /* 弹窗头部 */
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e6e6e6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        /* 弹窗内容 */
+        .modal-body {
+            padding: 20px;
+        }
+        
+        /* 许愿输入界面 */
+        .prayer-input-section {
+            display: block;
+        }
+        
+        .prayer-label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .prayer-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+        
+        .prayer-form {
+            margin-bottom: 20px;
+        }
+        
+        /* 表单分组 */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e6e6e6;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        /* 按钮样式 */
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: #ff6b6b;
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background-color: #ee5a52;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+        
+        /* 成功提示界面 */
+        .success-section {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .success-message {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        /* 历史记录界面 */
+        .history-section {
+            display: none;
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .history-table th,
+        .history-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e6e6e6;
+            font-size: 14px;
+        }
+        
+        .history-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .history-table td {
+            color: #666;
+        }
+        
+        /* 分页控件 */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .pagination-controls {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .page-btn {
+            padding: 5px 10px;
+            border: 1px solid #e6e6e6;
+            background-color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .page-btn.active {
+            background-color: #ff6b6b;
+            color: #fff;
+            border-color: #ff6b6b;
+        }
+        
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .page-info {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .modal-container {
+                width: 95%;
+                max-height: 90vh;
+            }
+            
+            .modal-header,
+            .modal-body {
+                padding: 15px;
+            }
+            
+            .history-table th,
+            .history-table td {
+                padding: 8px;
+                font-size: 12px;
+            }
+        }
+    </style>
+    <script>
+        // 为头像生成随机颜色和首字母
+        document.addEventListener('DOMContentLoaded', function() {
+            const avatars = document.querySelectorAll('.avatar-circle');
+            const colors = [
+                '#4285F4', '#EA4335', '#FBBC05', '#34A853',
+                '#9C27B0', '#FF9800', '#795548', '#607D8B',
+                '#E91E63', '#2196F3', '#4CAF50', '#FFC107'
+            ];
+            
+            avatars.forEach((avatar, index) => {
+                // 随机选择颜色
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                avatar.style.backgroundColor = randomColor;
+                avatar.style.color = '#fff';
+                
+                // 获取用户名首字母
+                const commentItem = avatar.closest('.comment-item');
+                const authorElement = commentItem.querySelector('.comment-author');
+                if (authorElement) {
+                    const authorName = authorElement.textContent;
+                    const firstChar = authorName.charAt(0).toUpperCase();
+                    avatar.textContent = firstChar;
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="article-header">
+            <h1 class="article-title">火遍青溪！本地人私藏的祈福宝地！超灵的！！</h1>
+            <div class="article-meta">
+                <span>万和寺</span>
+                <span>2026年3月1日 10:00</span>
+                <span>青溪市</span>
+                <span>👥 10人</span>
+            </div>
+        </div>
+        
+        <div class="article-content">
+            <p>青溪市的万和寺近来吸引了大批游客。不管是本地市民，还是周边城市赶来的朋友，都纷纷奔赴这座百年古寺，焚香祈福、打卡散心，香火日渐旺盛，成了青溪当下最火的文旅地标。</p>
+            
+            <p style="text-align: center; font-weight: bold;">🏯 百年古寺，藏着青溪人的烟火与祈愿</p>
+            
+            <p>作为青溪市最具影响力的佛教场所，万和寺承载了几代青溪人的记忆。它坐落在万和镇万和山半山腰，始建于明万历年间，距今已有 400 余年历史，历经岁月沧桑，依旧香火缭绕，静谧庄重。</p>
+            
+            <p>2018 年整体修缮后，万和寺既完整保留了明清古建风貌，也补齐了便民配套。寺内大雄宝殿庄严肃穆，藏经阁古色古香，3 通明清古碑静静伫立，诉说着百年时光；寺后的万和塔高 36 米，共 7 层，登顶就能俯瞰万和镇全景，青溪河风光尽收眼底，拍照巨出片！</p>
+            
+            <div style="text-align: center; margin: 20px 0;">
+                <img src="images/wanhesi.png" alt="万和寺" style="max-width: 100%; height: auto; border-radius: 8px;">
+            </div>
+            
+            <p>最受大家称赞的，是寺里的纯粹与贴心。很多青溪人逢年过节、遇事祈福，都习惯来这里走一走。寺内提供免费清香，心诚则灵，不用在门口高价买香烛，这份不商业化的初心，留住了无数老青溪人。</p>
+            
+            <p style="text-align: center; font-weight: bold;">🌿 不止祈福，更是周末散心好去处</p>
+            
+            <p>除了焚香许愿，万和寺也是逃离城市喧嚣的绝佳去处。寺后的万和生态林植被茂密，负氧离子拉满，登山步道平缓好走，不用费力气就能登顶。周末带着家人朋友来爬山吸氧，在山间听风声、闻香火味，所有烦心事都能被抚平。</p>
+            
+            <p style="text-align: center; font-weight: bold;">🚗 出行 & 逛吃指南，一篇搞定</p>
+            
+            <p>✅ 交通指引</p>
+            <p>公共交通：乘坐青溪市旅游 1 路专线，直达万和寺门口，无需转车</p>
+            <p>自驾出行：寺内及周边配套有停车场，不用担心停车难题</p>
+            
+            <p>✅ 周边逛吃逛完古寺，步行就能到万和镇老街，糖画、臭豆腐、溪南桂花糕…… 地道的青溪烟火气，一口就能尝到。</p>
+            
+            <div class="divider-10">
+                <div class="line line-left"></div>
+                <div class="shape"></div>
+                <div class="line line-right"></div>
+            </div>
+
+            <p>之所以有这么多人慕名而来，不止是因为古寺的禅意与风光，更因为口口相传的「灵验」。求姻缘、求事业、求平安、求学业、求财运，只要诚心许愿，很多人都得偿所愿，专程回来还愿。</p>
+            
+            <p>不方便亲自前往的朋友，也不用遗憾。点击文章末尾的【在线祈福】入口，就能许下你的心愿。愿每一份真诚的期盼，都能如期而至；愿所求皆如愿，所行皆坦途，所念皆安康🙏</p>
+            
+            <p>趁着春光正好，不妨约上家人朋友，来万和寺走一走。焚香祈福，登高望远，在禅意里放松身心，许下属于自己的美好心愿吧～</p>
+            
+            <p style="text-align: center; font-weight: bold;">——END——</p>
+            
+            <!-- 阅读原文 -->
+            <div class="read-original">
+                <a href="#" class="read-original-link">在线祈福</a>
+                <span class="read-count">阅读 8563</span>
+            </div>
+            
+            <!-- 留言区 -->
+            <div class="comments-section">
+                <h3 class="comments-title">留言 <span class="comments-count">15</span></h3>
+                
+                <!-- 留言输入框 -->
+                <div class="comment-input-container">
+                    <input type="text" class="comment-input" placeholder="写留言">
+                </div>
+                
+                <!-- 留言列表 -->
+                <div class="comments-list">
+                    <!-- 留言1 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">小余要冲重点高中</span>
+                                <span class="comment-time">1 小时前</span>
+                            </div>
+                            <div class="comment-text">上周和妈妈来拜了文殊菩萨！这次月考直接进步了 28 名！！特意来还愿！万和寺真的太灵了😭 高考前一定再来！</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言2 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">王大爷爱遛弯</span>
+                                <span class="comment-time">4 小时前</span>
+                            </div>
+                            <div class="comment-text">土生土长的青溪人，今年 72 了，万和寺从小拜到大。每年年初一都和老伴来烧头香，不求别的，就求子女工作顺顺利利，小重孙平平安安长大。寺里好，不坑我们老年人，免费的香足够用，师傅们也都和善。</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言3 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">不想加班的阿文</span>
+                                <span class="comment-time">3 小时前</span>
+                            </div>
+                            <div class="comment-text">救命！上个月来求跳槽顺利，这周直接拿到心仪公司的 offer，薪资涨了快 30%！明天就请假去还愿捐香油钱！心诚则灵真的不是说说的！</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言4 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">张桂兰阿姨</span>
+                                <span class="comment-time">3 小时前</span>
+                            </div>
+                            <div class="comment-text">我和老姐妹坐旅游专线来的，很方便，下车就到。寺里环境好，爬爬山也锻炼身体，许了愿，求老两口身体硬朗，孩子们都平平安安的，就知足了。</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言5 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">芋泥脑袋要上岸</span>
+                                <span class="comment-time">2 小时前</span>
+                            </div>
+                            <div class="comment-text">和室友从杭州过来打卡！古寺拍照真的太有氛围感了，日落的时候在万和塔拍照绝了！许了顺利毕业、考研上岸的愿，希望能灵验🙏</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言6 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">一诺的超人妈妈</span>
+                                <span class="comment-time">2 小时前</span>
+                            </div>
+                            <div class="comment-text">之前宝宝总反复感冒发烧，特意来求了平安健康，这一个月宝宝终于好好吃饭、不生病了，老母亲悬着的心终于放下了。特意来还愿，感谢菩萨保佑，之后一定会多做善事🙏</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言7 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">青山依旧</span>
+                                <span class="comment-time">2 小时前</span>
+                            </div>
+                            <div class="comment-text">年轻的时候跟着父母来，现在带着自己的孙子来，万和寺还是那个让人心里踏实的地方。修缮得很好，保留了老底子的味道，也方便了老人小孩，香火旺是有道理的。</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言8 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">萍姐爱养花</span>
+                                <span class="comment-time">1 小时前</span>
+                            </div>
+                            <div class="comment-text">来还愿的！之前来求儿子找个好工作，这周终于定下来了，进了他一直想去的单位。感谢菩萨保佑，也祝来祈福的朋友们都能得偿所愿。</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言9 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">晚风</span>
+                                <span class="comment-time">50 分钟前</span>
+                            </div>
+                            <div class="comment-text">周末一个人过来散心的，没想到寺里这么安静，闻着香火味，整个人紧绷的神经一下子就松了。不求大富大贵，只求平安顺遂就好。</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言10 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">家有俩小神兽</span>
+                                <span class="comment-time">1 小时前</span>
+                            </div>
+                            <div class="comment-text">周末带两个娃来的，步道很平缓，娃自己就能爬上去，寺里的师傅还给了孩子两颗糖，特别温柔。许了娃好好学习、家人平安的愿，希望都能实现。</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言11 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">是西西不是嘻嘻</span>
+                                <span class="comment-time">1 小时前</span>
+                            </div>
+                            <div class="comment-text">去年来求姻缘，今年五一就要和对象结婚啦！特意来评论区还愿，真的太灵了！诚心许愿真的会有回应！</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言12 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">夕阳红李姐</span>
+                                <span class="comment-time">1 小时前</span>
+                            </div>
+                            <div class="comment-text">和广场舞队的姐妹们一起来的，大家都许了愿，求家里人都好好的。寺里空气好，风景也好，以后还会常来，就当锻炼身体了。</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言13 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">攒钱买小窝的阿凯</span>
+                                <span class="comment-time">20 分钟前</span>
+                            </div>
+                            <div class="comment-text">求财运！求今年顺顺利利攒够首付！已经点了在线祈福，灵验了一定第一时间来还愿！</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言14 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">拍照的阿远</span>
+                                <span class="comment-time">35 分钟前</span>
+                            </div>
+                            <div class="comment-text">特意来拍古建的，万和寺的光影真的绝了，拍了整整一下午。也顺便许了愿，希望今年能多接几个大单，拍出更多好作品。</div>
+
+                        </div>
+                    </div>
+                    
+                    <!-- 留言15 -->
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <div class="avatar-circle"></div>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">小桃不淘气</span>
+                                <span class="comment-time">10 分钟前</span>
+                            </div>
+                            <div class="comment-text">来还愿！教资面试一次过！之前考前特意来拜了，真的顺顺利利通过了！大家有考试的真的可以来求求，心诚则灵！</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        
+        <div class="footer">
+            <p>「青溪百年古寺・诚心祈福圣地」</p>
+            <p>关注公众号，第一时间获取最新动态、活动信息、预约报名等</p>
+        </div>
+    </div>
+    
+    <!-- 在线祈福弹窗 -->
+    <div class="modal-overlay" id="prayerModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">在线祈福</h2>
+                <button class="close-button" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- 许愿输入界面 -->
+                <div class="prayer-input-section" id="prayerInputSection">
+                    <div class="prayer-form">
+                        <div class="form-group">
+                            <label class="prayer-label">请输入你的愿望</label>
+                            <textarea class="prayer-textarea" id="prayerContent" placeholder="请输入您的祈福内容，心诚则灵"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-buttons">
+                        <button class="btn btn-secondary" id="cancelPrayer">取消</button>
+                        <button class="btn btn-primary" id="submitPrayer">提交</button>
+                    </div>
+                </div>
+                
+                <!-- 许愿成功界面 -->
+                <div class="success-section" id="successSection">
+                    <div class="success-message">
+                        <p>许愿成功！</p>
+                        <p>愿您的心愿早日实现</p>
+                    </div>
+                    <div class="modal-buttons" style="justify-content: center;">
+                        <button class="btn btn-primary" id="viewHistory">查看历史许愿记录</button>
+                    </div>
+                </div>
+                
+                <!-- 历史记录界面 -->
+                <div class="history-section" id="historySection">
+                    <h3 style="margin-bottom: 15px; font-size: 16px; color: #333;">近期历史许愿记录</h3>
+                    <div id="historyTableContainer">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>许愿人</th>
+                                    <th>许愿内容</th>
+                                    <th>许愿时间</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <!-- 历史记录将通过JavaScript动态添加 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <p>暂无许愿记录</p>
+                    </div>
+                    <div class="pagination" id="pagination">
+                        <div class="page-info" id="pageInfo"></div>
+                        <div class="pagination-controls" id="paginationControls">
+                            <!-- 分页按钮将通过JavaScript动态添加 -->
+                        </div>
+                    </div>
+                    <div class="modal-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-secondary" id="backToPrayer">返回许愿</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 在线祈福弹窗功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const modalOverlay = document.getElementById('prayerModal');
+            const prayerInputSection = document.getElementById('prayerInputSection');
+            const successSection = document.getElementById('successSection');
+            const historySection = document.getElementById('historySection');
+            const historyTableBody = document.getElementById('historyTableBody');
+            const emptyState = document.getElementById('emptyState');
+            const pagination = document.getElementById('pagination');
+            const paginationControls = document.getElementById('paginationControls');
+            const pageInfo = document.getElementById('pageInfo');
+            
+            // 打开弹窗的按钮
+            const prayerButton = document.querySelector('.read-original-link');
+            
+            // 关闭弹窗的按钮
+            const closeModal = document.getElementById('closeModal');
+            const cancelPrayer = document.getElementById('cancelPrayer');
+            
+            // 提交许愿的按钮
+            const submitPrayer = document.getElementById('submitPrayer');
+            
+            // 查看历史记录的按钮
+            const viewHistory = document.getElementById('viewHistory');
+            const backToPrayer = document.getElementById('backToPrayer');
+            
+            // 历史许愿记录数据
+            let prayerHistory = [
+                { name: '小余', content: '高考顺利，考上重点大学', time: '2026-03-14 10:30' },
+                { name: '王大爷', content: '子女工作顺利，小重孙平安长大', time: '2026-03-14 09:15' },
+                { name: '阿文', content: '跳槽顺利，薪资上涨', time: '2026-03-13 16:45' },
+                { name: '张桂兰', content: '老两口身体硬朗，孩子们平安', time: '2026-03-13 14:20' },
+                { name: '芋泥脑袋', content: '顺利毕业，考研上岸', time: '2026-03-12 15:30' },
+                { name: '一诺妈妈', content: '宝宝健康成长，不再生病', time: '2026-03-12 10:00' },
+                { name: '青山依旧', content: '家人平安，健康快乐', time: '2026-03-11 11:20' },
+                { name: '萍姐', content: '儿子找到好工作', time: '2026-03-11 09:45' },
+                { name: '晚风', content: '平安顺遂，心情愉悦', time: '2026-03-10 18:30' },
+                { name: '家有俩娃', content: '孩子好好学习，家人平安', time: '2026-03-10 14:15' },
+                { name: '<strong>周明</strong>', content: '<strong>究竟安乐，所愿皆成</strong>', time: '2026-03-09 15:55' },
+                { name: '西西', content: '姻缘美满，幸福一生', time: '2026-03-09 12:00' },
+                { name: '李姐', content: '家人健康，生活愉快', time: '2026-03-09 10:30' },
+                { name: '阿凯', content: '财运亨通，攒够首付', time: '2026-03-08 16:00' },
+                { name: '<strong>周明</strong>', content: '<strong>究竟安乐，所愿皆成</strong>', time: '2026-03-02 14:45' },
+                { name: '小桃', content: '教资面试通过', time: '2026-03-02 11:15' }
+            ];
+            
+            // 分页配置
+            const pageSize = 6;
+            let currentPage = 1;
+            
+            // 打开弹窗
+            prayerButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                modalOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden'; // 禁止背景滚动
+                showSection(prayerInputSection);
+            });
+            
+            // 关闭弹窗
+            function closeModalFunc() {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = ''; // 恢复背景滚动
+            }
+            
+            closeModal.addEventListener('click', closeModalFunc);
+            cancelPrayer.addEventListener('click', closeModalFunc);
+            
+            // 点击弹窗外部关闭
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    closeModalFunc();
+                }
+            });
+            
+            // 提交许愿
+            submitPrayer.addEventListener('click', function() {
+                const content = document.getElementById('prayerContent').value;
+                
+                if (!content) {
+                    alert('请填写祈福内容');
+                    return;
+                }
+                
+                // 添加新的许愿记录，时间固定为2026年3月18日
+                const time = '2026-03-18';
+                
+                prayerHistory.unshift({ name: '匿名', content, phone: '', time });
+                
+                // 清空表单
+                document.getElementById('prayerContent').value = '';
+                
+                // 显示成功界面
+                showSection(successSection);
+            });
+            
+            // 查看历史记录
+            viewHistory.addEventListener('click', function() {
+                showSection(historySection);
+                renderHistory();
+            });
+            
+            // 返回许愿
+            backToPrayer.addEventListener('click', function() {
+                showSection(prayerInputSection);
+            });
+            
+            // 显示指定 section
+            function showSection(section) {
+                prayerInputSection.style.display = 'none';
+                successSection.style.display = 'none';
+                historySection.style.display = 'none';
+                section.style.display = 'block';
+            }
+            
+            // 渲染历史记录
+            function renderHistory() {
+                const startIndex = (currentPage - 1) * pageSize;
+                const endIndex = startIndex + pageSize;
+                const paginatedHistory = prayerHistory.slice(startIndex, endIndex);
+                
+                // 清空表格
+                historyTableBody.innerHTML = '';
+                
+                if (paginatedHistory.length === 0) {
+                    emptyState.style.display = 'block';
+                    pagination.style.display = 'none';
+                } else {
+                    emptyState.style.display = 'none';
+                    pagination.style.display = 'flex';
+                    
+                    // 添加记录
+                    paginatedHistory.forEach(prayer => {
+                        const row = document.createElement('tr');
+                        
+                        // 只显示日期部分
+                        const dateOnly = prayer.time ? prayer.time.split(' ')[0] : '';
+                        
+                        row.innerHTML = `
+                            <td>${prayer.name}</td>
+                            <td>${prayer.content}</td>
+                            <td>${dateOnly}</td>
+                        `;
+                        
+                        historyTableBody.appendChild(row);
+                    });
+                    
+                    // 渲染分页控件
+                    renderPagination();
+                }
+            }
+            
+            // 渲染分页控件
+            function renderPagination() {
+                const totalPages = Math.ceil(prayerHistory.length / pageSize);
+                paginationControls.innerHTML = '';
+                
+                // 上一页按钮
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'page-btn';
+                prevBtn.textContent = '上一页';
+                prevBtn.disabled = currentPage === 1;
+                prevBtn.addEventListener('click', function() {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        renderHistory();
+                    }
+                });
+                paginationControls.appendChild(prevBtn);
+                
+                // 页码按钮
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                    pageBtn.textContent = i;
+                    pageBtn.addEventListener('click', function() {
+                        currentPage = i;
+                        renderHistory();
+                    });
+                    paginationControls.appendChild(pageBtn);
+                }
+                
+                // 下一页按钮
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'page-btn';
+                nextBtn.textContent = '下一页';
+                nextBtn.disabled = currentPage === totalPages;
+                nextBtn.addEventListener('click', function() {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        renderHistory();
+                    }
+                });
+                paginationControls.appendChild(nextBtn);
+                
+                // 页码信息
+                pageInfo.textContent = `第 ${currentPage} 页，共 ${totalPages} 页`;
+            }
+        });
+    </script>
+</body>
+</html>

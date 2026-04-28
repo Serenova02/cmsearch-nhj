@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>论坛-发现新鲜事儿</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .header-right input {
+                flex: 1;
+                margin-right: 5px;
+            }
+            
+            .nav {
+                padding: 10px;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .nav a {
+                margin-right: 15px;
+                font-size: 13px;
+            }
+            
+            .left-content {
+                padding: 10px;
+            }
+            
+            .thread-item {
+                padding: 10px;
+            }
+            
+            .thread-title {
+                font-size: 14px;
+            }
+            
+            .thread-content {
+                font-size: 13px;
+            }
+            
+            .thread-detail-content {
+                width: 95%;
+                margin: 20px auto;
+            }
+        }
+        
+        /* 头部样式 */
+        .header {
+            background-color: #0066cc;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-right a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 14px;
+        }
+        
+        .header-right input {
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+        
+        /* 导航栏样式 */
+        .nav {
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .nav a {
+            text-decoration: none;
+            color: #333;
+            margin-right: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .nav a:hover {
+            color: #0066cc;
+        }
+        
+        /* 主要内容区域 */
+        .main-content {
+            display: block;
+        }
+        
+        /* 左侧内容 */
+        .left-content {
+            padding: 20px;
+        }
+        
+        /* 板块标题 */
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        /* 帖子列表 */
+        .thread-list {
+            margin-bottom: 30px;
+        }
+        
+        .thread-item {
+            padding: 15px;
+            border-bottom: 1px solid #e5e5e5;
+            background-color: #fff;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .thread-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .thread-tag {
+            background-color: #0066cc;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: normal;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+        
+        .thread-title a {
+            text-decoration: none;
+            color: #0066cc;
+            flex: 1;
+        }
+        
+        .thread-title a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 翻页条样式 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            padding: 10px;
+        }
+        
+        .pagination a {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 0 5px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: transparent;
+        }
+        
+        .pagination a:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .pagination .active {
+            background-color: #0066cc;
+            color: #fff;
+            border-color: #0066cc;
+        }
+        
+        .thread-meta {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .thread-content {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .thread-stats {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* 回复区域 */
+        .reply-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e5e5e5;
+        }
+        
+        .reply-item {
+            padding: 10px;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+        
+        .reply-item.author-reply {
+            background-color: #f0f8ff;
+            border-left: 3px solid #1e90ff;
+        }
+        
+        .reply-item.author-reply .reply-meta {
+            color: #1e90ff;
+            font-weight: 500;
+        }
+        
+        .reply-meta {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .reply-content {
+            font-size: 14px;
+            color: #333;
+        }
+        
+        /* 右侧边栏样式 */
+        .sidebar-section {
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .sidebar-list {
+            list-style: none;
+        }
+        
+        .sidebar-list li {
+            margin-bottom: 8px;
+        }
+        
+        .sidebar-list a {
+            text-decoration: none;
+            color: #333;
+            font-size: 13px;
+        }
+        
+        .sidebar-list a:hover {
+            color: #0066cc;
+        }
+        
+        /* 底部样式 */
+        .footer {
+            background-color: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* 帖子详情页面样式 */
+        .thread-detail {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .detail-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .detail-meta {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .detail-content {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        .detail-replies {
+            margin-top: 30px;
+        }
+        
+        .reply-header {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        /* 隐藏的帖子详情 */
+        .thread-detail-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .thread-detail-content {
+            width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .detail-header {
+            background-color: #0066cc;
+            color: #fff;
+            padding: 15px 20px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .detail-header h2 {
+            font-size: 18px;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .detail-body {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>青溪市生活论坛 - 分享新鲜事儿</h1>
+            <div class="header-right">
+                <input type="text" placeholder="站内搜索">
+                <a href="#">登录</a>
+                <a href="#">注册</a>
+                <a href="#">社区服务</a>
+            </div>
+        </div>
+        
+        <!-- 导航栏 -->
+        <div class="nav">
+            <a href="#">同城闲聊</a>
+            <a href="#">副业交流</a>
+            <a href="#">求助问答</a>
+            <a href="#">文旅打卡</a>
+            <a href="#">八卦爆料</a>
+            <a href="#">本地美食</a>
+            <a href="#">房屋租售</a>
+            <a href="#">宠物领养</a>
+        </div>
+        
+        <!-- 主要内容区域 -->
+        <div class="main-content">
+            <!-- 左侧内容 -->
+            <div class="left-content">
+                <!-- 同城闲聊板块 -->
+                <div class="thread-list">
+                    
+                    <!-- 帖子1 -->
+                    <div class="thread-item">
+                        <div class="thread-title">
+                            <span class="thread-tag">同城闲聊</span>
+                            <a href="#" class="thread-link" data-thread="thread1">救命！青溪老街那家网红桂花糕，我被坑惨了😭</a>
+                        </div>
+                        <div class="thread-meta">
+                            楼主：溪溪爱吃甜 | 发布时间：2026-03-16 10:23 | 浏览：386 | 回复：3
+                        </div>
+                        <div class="thread-content">
+                            家人们谁懂啊！昨天去老街买那家很火的桂花糕，排队排了40分钟...
+                        </div>
+                    </div>
+                    
+                    <!-- 帖子2 -->
+                    <div class="thread-item">
+                        <div class="thread-title">
+                            <span class="thread-tag">同城闲聊</span>
+                            <a href="#" class="thread-link" data-thread="thread2">吃瓜！新城区科创园某公司，老板天天骂员工？</a>
+                        </div>
+                        <div class="thread-meta">
+                            楼主：匿名爆料人 | 发布时间：2026-03-14 16:47 | 浏览：521 | 回复：3
+                        </div>
+                        <div class="thread-content">
+                            朋友在新城区科创园某新媒体公司上班，说他们老板脾气巨差...
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <!-- 副业交流板块 -->
+                <div class="thread-list">
+                    
+                    <!-- 帖子3 -->
+                    <div class="thread-item">
+                        <div class="thread-title">
+                            <span class="thread-tag">副业交流</span>
+                            <a href="#" class="thread-link" data-thread="thread3">青溪宝妈/打工人必看！无经验副业搞钱实测，不用囤货不踩坑✅</a>
+                        </div>
+                        <div class="thread-meta">
+                            楼主：努力搞钱的小琳 | 发布时间：2026-03-11 09:15 | 浏览：678 | 回复：7
+                        </div>
+                        <div class="thread-content">
+                            本人青溪宝妈一枚，在家带娃没收入，试了好多副业都踩坑了...
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <!-- 文旅打卡板块 -->
+                <div class="thread-list">
+                    
+                    <!-- 帖子4 -->
+                    <div class="thread-item">
+                        <div class="thread-title">
+                            <span class="thread-tag">文旅打卡</span>
+                            <a href="#" class="thread-link" data-thread="thread4">提问！万和寺许愿灵不灵啊</a>
+                        </div>
+                        <div class="thread-meta">
+                            楼主：求好运的小仙 | 发布时间：2026-03-06 11:30 | 浏览：452 | 回复：6
+                        </div>
+                        <div class="thread-content">
+                            昨天跟妈妈去万和寺许愿了，想求个好姻缘...
+                        </div>
+                    </div>
+                    
+                    <!-- 帖子5 -->
+                    <div class="thread-item">
+                        <div class="thread-title">
+                            <span class="thread-tag">同城闲聊</span>
+                            <a href="#" class="thread-link" data-thread="thread5">急！老婆生日快到了，送什么礼物合适又不容易出错</a>
+                        </div>
+                        <div class="thread-meta">
+                            楼主：周哥本人 | 发布时间：2026-02-28 15:18 | 浏览：723 | 回复：8
+                        </div>
+                        <div class="thread-content">
+                            下周就是老婆生日了，送什么礼物合适又不容易出错，求推荐！……
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <!-- 求助问答板块 -->
+                <div class="thread-list">
+                    
+                    <!-- 帖子6 -->
+                    <div class="thread-item">
+                        <div class="thread-title">
+                            <span class="thread-tag">求助问答</span>
+                            <a href="#" class="thread-link" data-thread="thread6">求问！有没有人知道租房合同被坑了怎么维权？急！😭</a>
+                        </div>
+                        <div class="thread-meta">
+                            楼主：小黎同学 | 发布时间：2026-02-27 14:50 | 浏览：398 | 回复：7
+                        </div>
+                        <div class="thread-content">
+                            求助！！刚刚毕业租的房子被合同套路了，本月刚到期退房，...
+                        </div>
+                    </div>
+                    
+                    <!-- 帖子7 -->
+                    <div class="thread-item">
+                        <div class="thread-title">
+                            <span class="thread-tag">求助问答</span>
+                            <a href="#" class="thread-link" data-thread="thread7">青溪哪里有靠谱的旧银饰翻新的地方？</a>
+                        </div>
+                        <div class="thread-meta">
+                            楼主：阿婆的银手镯 | 发布时间：2026-02-26 08:45 | 浏览：276 | 回复：2
+                        </div>
+                        <div class="thread-content">
+                            家里有个旧银手镯，是我奶奶传下来的，有划痕还有刻字，想找个地方翻新一下...
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <!-- 本地美食板块 -->
+                <div class="thread-list">
+                    
+                    <!-- 帖子8 -->
+                    <div class="thread-item">
+                        <div class="thread-title">
+                            <span class="thread-tag">本地美食</span>
+                            <a href="#" class="thread-link" data-thread="thread8">盘点青溪5家宝藏小吃店，本地人私藏，外地人找不到！</a>
+                        </div>
+                        <div class="thread-meta">
+                            楼主：美食探店达人 | 发布时间：2026-02-25 11:10 | 浏览：192 | 回复：2
+                        </div>
+                        <div class="thread-content">
+                            作为土生土长的青溪人，给大家盘点5家本地人私藏的小吃店，好吃不贵...
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 翻页条 -->
+                <div class="pagination">
+                    <a >上一页</a>
+                    <a class="active">1</a>
+                    <a >2</a>
+                    <a >3</a>
+                    <a >4</a>
+                    <a >5</a>
+                    <a >...</a>
+                    <a >99+</a>
+                    <a >下一页</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部 -->
+        <div class="footer">
+            <p>©2019-2026 青溪市生活论坛 | 分享新鲜事儿</p>
+            <p>温馨提示：本论坛仅为本地网友交流平台，请勿发布违法违规、虚假信息，谨防诈骗</p>
+        </div>
+    </div>
+    
+    <!-- 帖子详情弹窗 -->
+    <div class="thread-detail-container" id="threadDetail">
+        <div class="thread-detail-content">
+            <div class="detail-header">
+                <h2 id="detailTitle">帖子详情</h2>
+                <button class="close-btn" onclick="closeThreadDetail()">&times;</button>
+            </div>
+            <div class="detail-body" id="detailBody">
+                <!-- 帖子详情内容将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 帖子数据
+        const threads = {
+            thread1: {
+                title: "救命！青溪老街那家网红桂花糕，我被坑惨了😭",
+                author: "溪溪爱吃甜",
+                time: "2026-03-16 10:23",
+                views: "386",
+                replies: "3",
+                content: "家人们谁懂啊！昨天去老街买那家很火的桂花糕，排队排了40分钟，结果买回去发现一半都是碎的，而且一点都不甜，还卖15块钱一盒，比溪南菜市场的贵一倍！有没有姐妹跟我一样踩坑的？",
+                replyList: [
+                    {
+                        author: "青溪土著阿泽",
+                        time: "2026-03-16 10:28",
+                        content: "哈哈哈，我早就说过那家是网红营销！真正好吃的是老街最里面那家\"溪南糕点铺\"，老奶奶自己做的，才8块钱一盒，巨香！",
+                    },
+                    {
+                        author: "奶茶不胖",
+                        time: "2026-03-16 10:35",
+                        content: "我也踩过！上次买了两盒，送朋友都不好意思，后来再也不去了，还是认准老字号靠谱",
+                    },
+                    {
+                        author: "楼主回复",
+                        time: "2026-03-16 10:40",
+                        content: "谢谢姐妹！下次就去溪南糕点铺试试，再也不被网红店割韭菜了😭"
+                    }
+                ]
+            },
+            thread2: {
+                title: "吃瓜！新城区科创园某公司，老板天天骂员工？",
+                author: "匿名爆料人",
+                time: "2026-03-14 16:47",
+                views: "521",
+                replies: "3",
+                content: "朋友在新城区科创园某新媒体公司上班，说他们老板脾气巨差，天天骂员工，还逼员工做一些奇奇怪怪的事，加班还不给补贴，有没有知道这家公司的？不敢说名字，怕被朋友报复",
+                replyList: [
+                    {
+                        author: "爱吃瓜的小桃",
+                        time: "2026-03-14 16:52",
+                        content: "不会是cx吧？我上次去面试，老板说话就很冲，感觉脾气不好",
+                    },
+                    {
+                        author: "打工人太难了",
+                        time: "2026-03-14 17:01",
+                        content: "大概率是！我同学之前在那干了一个月就走了，说老板姓周，特别暴躁，还拖欠工资",
+                    },
+                    {
+                        author: "楼主回复",
+                        time: "2026-03-14 17:08",
+                        content: "对！就是姓周的老板，看来不是我朋友一个人这么说..."
+                    }
+                ]
+            },
+            thread3: {
+                title: "青溪宝妈/打工人必看！无经验副业搞钱实测，不用囤货不踩坑✅",
+                author: "努力搞钱的小琳",
+                time: "2026-03-11 09:15",
+                views: "678",
+                replies: "7",
+                content: "本人青溪宝妈一枚，在家带娃没收入，试了好多副业都踩坑了（刷单、微商囤货全亏了），最近终于找到一个靠谱的，就是做小红书店铺孵化，不用囤货，有人带，我做了一个月，赚了2000多，够给娃买奶粉了！有没有姐妹想一起做的？互相交流经验，避免踩坑，真心分享，不是广告！",
+                replyList: [
+                    {
+                        author: "打工人阿凯",
+                        time: "2026-03-11 09:21",
+                        content: "真的假的？我也想搞副业，但是没经验，没人带根本不会啊，楼主有没有靠谱的老师推荐",
+                    },
+                    {
+                        author: "楼主回复",
+                        time: "2026-03-11 09:28",
+                        content: "真的！我是跟着小红书上一个叫周哥学的，他专门做这个，很有经验，手把手教，从账号注册到运营都教，我一个小白都能学会",
+                    },
+                    {
+                        author: "爱吃瓜的小桃",
+                        time: "2026-03-11 09:35",
+                        content: "求周哥联系方式！我也想做，在家太闲了，想赚点零花钱"
+                    },
+                    {
+                        author: "楼主回复",
+                        time: "2026-03-11 09:40",
+                        content: "他主要在小红书分享，你们可以去搜他账号：周哥副业实战，他笔记里面也有很多干货"
+                    },
+                    {
+                        author: "奶茶不胖",
+                        time: "2026-03-11 10:05",
+                        content: "我关注过！看起来挺靠谱的，我准备也试试"
+                    },
+                    {
+                        author: "楼主回复",
+                        time: "2026-03-11 10:12",
+                        content: "嗯嗯，他这里没有隐形消费，比那些刷单靠谱多了"
+                    },
+                    {
+                        author: "<strong>周哥本人</strong>",
+                        time: "2026-03-11 14:30",
+                        content: "感谢姐妹推荐！青溪本地的朋友，关注我私信备注“论坛”，免费送店铺孵化新手教程～"
+                    }
+                ]
+            },
+            thread4: {
+                title: "提问！万和寺许愿灵不灵啊",
+                author: "求好运的小仙",
+                time: "2026-03-06 11:30",
+                views: "452",
+                replies: "6",
+                content: "昨天跟妈妈去万和寺许愿了，想求个好姻缘，想问问万和寺许愿到底灵不灵啊…… 听人说挺玄乎的",
+                replyList: [
+                    {
+                        author: "万和镇土著",
+                        time: "2026-03-06 11:36",
+                        content: "本地人经常去！主打一个心诚则灵",
+                    },
+                    {
+                        author: "佛系祈福人",
+                        time: "2026-03-06 11:42",
+                        content: "很灵！！本来考研没报太大希望，结果许完愿，第二天成绩出来顺利上岸！",
+                    },
+                    {
+                        author: "纯牛马",
+                        time: "2026-03-06 11:48",
+                        content: "前段时间事业一度低迷，去祈福试了试，结果没多久薪资就上涨了…… 一定要诚心！"
+                    },
+                    {
+                        author: "溪溪爱吃甜",
+                        time: "2026-03-06 12:05",
+                        content: "我也去看过！里面好多人求姻缘、求财运的，还愿的也特别多，确实很灵，楼主记得愿望实现了去还愿哦，要心诚！"
+                    },
+                    {
+                        author: "晚风",
+                        time: "2026-03-06 12:05",
+                        content: "我也打算去祈福，但最近一直在外面出差回不去啊😭😭"
+                    },
+                    {
+                        author: "阿柚",
+                        time: "2026-03-06 12:10",
+                        content: "<strong>可以线上祈福啊，万和寺公众号就可以，有个“在线祈福”按钮，点进去就可以祈福了，祈福完成还可以看到其他人的愿望呢</strong>"
+                    }
+                ]
+            },
+            thread5: {
+                title: "急！老婆生日快到了，送什么礼物合适又不容易出错",
+                author: "<strong>周哥本人</strong>",
+                time: "2026-02-28 15:18",
+                views: "723",
+                replies: "8",
+                content: "下周就是老婆生日了，送什么礼物合适又不容易出错，求推荐！不管是店铺还是礼物思路都行，在线等",
+                replyList: [
+                    {
+                        author: "青溪本地通",
+                        time: "2026-02-28 15:19",
+                        content: "哈哈老哥太真实了！女生其实都喜欢精致点的，市中心那家银饰店不错，或者送香水、护肤品礼盒基本不会踩雷，青溪的中心商场一楼专柜都可以挑！"
+                    },
+                    {
+                        author: "人间拾光",
+                        time: "2026-02-28 15:21",
+                        content: "补充一下！可以选生日当天带她吃顿好的再送礼物，双倍心意"
+                    },
+                    {
+                        author: "随风",
+                        time: "2026-02-28 15:25",
+                        content: "下周不是就三八妇女节了嘛！正好一起送了哈哈哈，趁着过节搞活动还能优惠不少"
+                    },
+                    {
+                        author: "楼主回复",
+                        time: "2026-02-28 15:26",
+                        content: "对对！我老婆生日刚巧就在<strong>妇女节</strong>"
+                    },
+                    {
+                        author: "随风",
+                        time: "2026-02-28 15:27",
+                        content: "这么巧，那刚好一起过了啊"
+                    },
+                    {
+                        author: "楼主回复",
+                        time: "2026-02-28 15:28",
+                        content: "嗯，而且我生日跟我老婆就<strong>差了2天</strong>，每年我俩索性都一起过了"
+                    },
+                    {
+                        author: "随风",
+                        time: "2026-02-28 15:30",
+                        content: "太有缘分了！祝幸福！"
+                    },
+                    {
+                        author: "楼主回复",
+                        time: "2026-02-28 15:31",
+                        content: "谢谢"
+                    }
+                ]
+            },
+            thread6: {
+                title: "求问！有没有人知道租房合同被坑了怎么维权？急！😭",
+                author: "小黎同学",
+                time: "2026-02-27 14:50",
+                views: "398",
+                replies: "7",
+                content: "求助！！刚刚毕业租的房子被合同套路了，本月刚到期退房，结果那个二房东（也可能是黑中介）找各种奇葩理由扣我押金！说什么墙面有划痕（我搬进去的时候就有了，但当时没拍照留证）、冰箱要收折旧费，我这一个月工资都不够他扣的！现在他把我微信拉黑了一半（不回消息但没删），电话不接。有没有懂行的朋友教教我该怎么维权？真的咽不下这口气！急急急！在线等！",
+                replyList: [
+                    {
+                        author: "匿名网友",
+                        time: "2026-02-27 14:56",
+                        content: "心疼楼主，谁打工的时候没踩过租房的坑呢…… 你先别急，确认一下你签的是个人合同还是中介公司的合同？如果是公司的话好办点，直接打12345投诉！",
+                    },
+                    {
+                        author: "普法小卫士",
+                        time: "2026-02-27 15:02",
+                        content: "针对楼主的情况，给几个实操建议：\n1.收集证据：聊天记录、转账记录、租房合同原件，还有退房时的房屋现状照片视频，全部保存好。\n2.打市长热线12345：重点强调“黑中介存在欺诈行为，乱收费”，接线员会帮你转给当地的住建局或房管局。\n3.微法院起诉：如果是二房东个人，去微信小程序搜“XX微法院”，直接网上立案！不需要请律师，自己写个起诉状把诉求写清楚就行。",
+                    },
+                    {
+                        author: "楼主回复",
+                        time: "2026-02-27 15:10",
+                        content: "谢谢大神！请问起诉的话，周期长吗？我下个月就要去外地工作了，怕耗不起时间😭"
+                    },
+                    {
+                        author: "青树",
+                        time: "2026-02-27 15:18",
+                        content: "楼主这情况有点被动，如果缺少核心证据，走正规流程确实容易被扯皮耗时间。实在不行……你要不去联系下默哥？他也是个侦探，能力挺强，之前好几个老哥遇到合同诈骗那种破事，最后好像都是他帮忙找到证据的"
+                    },
+                    {
+                        author: "糕七",
+                        time: "2026-02-27 15:25",
+                        content: "楼上一说我想起来了，确实能找他，上个月有人做小红书副业被合同坑惨了，差点得赔好几千进去，还好找了默哥帮忙，顺藤摸瓜把那家公司的黑历史和造假证据全扒了个底朝天"
+                    },
+                    {
+                        author: "楼主回复",
+                        time: "2026-02-27 15:30",
+                        content: "太感谢了！请问有他联系方式吗"
+                    },
+                    {
+                        author: "青树",
+                        time: "2026-02-27 16:00",
+                        content: "<strong>他微信号是Chenmo</strong>，直接搜索添加就行，祝你顺利解决！"
+                    }
+                ]
+            },
+            thread7: {
+                title: "青溪哪里有靠谱的旧银饰翻新的地方？",
+                author: "阿婆的银手镯",
+                time: "2026-02-26 08:45",
+                views: "276",
+                replies: "2",
+                content: "家里有个旧银手镯，是我奶奶传下来的，有划痕还有刻字，想找个地方翻新一下，去掉刻字，有没有青溪老乡知道哪里有靠谱的？别坑人，价格合理的那种，谢谢大家！",
+                replyList: [
+                    {
+                        author: "匿名",
+                        time: "2026-02-26 09:00",
+                        content: "新塍镇有一家，不过忘了名字，我之前翻新过银项链，价格很合理，去字也很干净",
+                    },
+                    {
+                        author: "匿名",
+                        time: "2026-02-26 09:15",
+                        content: "我这边可以弄，负责旧银饰回收、翻新、去字，价格公道，市区可上门，<strong>电话：15401781112（微信同号）</strong>",
+                    }
+                ]
+            },
+            thread8: {
+                title: "盘点青溪5家宝藏小吃店，本地人私藏，外地人找不到！",
+                author: "美食探店达人",
+                time: "2026-02-25 11:10",
+                views: "892",
+                replies: "2",
+                content: "作为土生土长的青溪人，给大家盘点5家本地人私藏的小吃店，好吃不贵，外地人根本找不到：\n1. 溪南菜市场门口：阿婆的糖糕，每天早上限量卖，外酥里糯，5块钱2个；\n2. 滨河街道：老王家馄饨，皮薄馅大，汤鲜，10块钱一碗，吃了20年；\n3. 万和镇：寺庙门口的臭豆腐，外焦里嫩，配上秘制酱料，绝了；\n4. 新城区：科创园附近的杂粮煎饼，料足，8块钱一个，打工人早餐首选；\n5. 溪北镇：水乡鱼虾馆，清蒸鲫鱼巨鲜，都是青溪河新鲜打捞的。\n\n有没有补充的？欢迎评论区留言～",
+                replyList: [
+                    {
+                        author: "Kethiy",
+                        time: "2026-02-25 09:00",
+                        content: "已收藏！感谢楼主！",
+                    },
+                    {
+                        author: "柚子茶",
+                        time: "2026-02-25 09:15",
+                        content: "已存！周末去打卡",
+                    }
+                ]
+            }
+        };
+        
+        // 打开帖子详情
+        function openThreadDetail(threadId) {
+            const thread = threads[threadId];
+            if (!thread) return;
+            
+            // 填充帖子详情
+            document.getElementById('detailTitle').textContent = thread.title;
+            
+            // 处理换行符
+            const contentWithLineBreaks = thread.content.replace(/\n/g, '<br>');
+            
+            let detailHTML = `
+                <div class="detail-meta">
+                    楼主：${thread.author} | 发布时间：${thread.time} | 浏览：${thread.views} | 回复：${thread.replies}
+                </div>
+                <div class="detail-content">
+                    ${contentWithLineBreaks}
+                </div>
+                <div class="detail-replies">
+                    <h3 class="reply-header">回复 (${thread.replies})</h3>
+            `;
+            
+            // 填充回复
+            thread.replyList.forEach((reply, index) => {
+                const isAuthorReply = reply.author === '楼主回复';
+                const replyClass = isAuthorReply ? 'reply-item author-reply' : 'reply-item';
+                // 处理回复内容中的换行符
+                const replyContentWithLineBreaks = reply.content.replace(/\n/g, '<br>');
+                detailHTML += `
+                    <div class="${replyClass}">
+                        <div class="reply-meta">
+                            ${index + 1}楼${reply.floor ? `（${reply.floor}）` : ''}：${reply.author} | ${reply.time}
+                        </div>
+                        <div class="reply-content">
+                            ${replyContentWithLineBreaks}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            detailHTML += `
+                </div>
+            `;
+            
+            document.getElementById('detailBody').innerHTML = detailHTML;
+            document.getElementById('threadDetail').style.display = 'block';
+            // 禁止页面滚动
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // 关闭帖子详情
+        function closeThreadDetail() {
+            document.getElementById('threadDetail').style.display = 'none';
+            // 恢复页面滚动
+            document.body.style.overflow = '';
+        }
+        
+        // 绑定帖子链接点击事件
+        document.querySelectorAll('.thread-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const threadId = this.getAttribute('data-thread');
+                openThreadDetail(threadId);
+            });
+        });
+        
+        // 点击弹窗外部关闭
+        document.getElementById('threadDetail').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeThreadDetail();
+            }
+        });
+    </script>
+</body>
+</html>
