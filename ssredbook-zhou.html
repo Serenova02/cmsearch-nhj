@@ -1788,21 +1788,22 @@
                 
             // 验证账号密码
             if (account === '柰花集' && password === 'n@1hu@j1oS18') {
-                // 模拟登录成功（实际项目中替换为真实接口请求）
                 alert(`账号 ${account} 登录成功！`);
                 closeModal();
-                // 跳转到redbook-lin.html
                 window.location.href = 'redbook-lin.html';
             } else if (account === '周哥副业实战' && password === 'jjalsyjc') {
-                // 模拟登录成功（实际项目中替换为真实接口请求）
                 alert(`账号 ${account} 登录成功！`);
                 closeModal();
-                // 跳转到redbook-zhou.html
                 window.location.href = 'redbook-zhou.html';
+            } else if (account === '柰花集') {
+                alert('密码错误！提示：尝试将常用密码进行字符替换');
+            } else if (account === '周哥副业实战') {
+                alert('密码错误！提示：尝试周明的愿望（首字母小写）');
             } else {
-                alert('账号或密码错误！');
+                alert('该账号不存在！');
             }
         });
+
 
         
     </script>
