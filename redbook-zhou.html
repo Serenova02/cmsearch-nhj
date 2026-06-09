@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>周哥副业实战-个人主页</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -1075,162 +1075,444 @@
             cursor: pointer;
         }
 
-        /* 移动端适配 */
+        /* 平板设备适配 */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 140px;
+            }
+            
+            .notes-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 12px;
+            }
+        }
+
+        /* 手机设备适配 */
         @media (max-width: 768px) {
-            /* 侧边栏改为横向导航 */
+            html, body {
+                width: 100%;
+                overflow-x: hidden;
+            }
+
             .container {
                 flex-direction: column;
-                padding: 0 8px;
+                padding: 0;
+                gap: 0;
             }
 
             .sidebar {
                 width: 100%;
                 height: auto;
                 flex-direction: row;
+                flex-wrap: wrap;
                 align-items: center;
-                padding: 8px 16px;
+                justify-content: space-between;
+                padding: 10px 12px;
                 position: static;
-                gap: 16px;
+                border-bottom: 1px solid #f0f0f0;
+                background-color: #fff;
             }
 
             .sidebar .logo {
-                margin-right: 16px;
+                width: 65px;
+                height: 26px;
+                border-radius: 13px;
+                font-size: 13px;
+                margin-right: 0;
+                flex-shrink: 0;
             }
 
             .sidebar .nav-list {
                 flex-direction: row;
                 margin-top: 0;
-                gap: 16px;
+                gap: 12px;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                scrollbar-width: none;
                 flex: 1;
+                justify-content: center;
+            }
+
+            .sidebar .nav-list::-webkit-scrollbar {
+                display: none;
+            }
+
+            .sidebar .nav-item {
+                padding: 6px 10px;
+                font-size: 14px;
+                gap: 8px;
+                white-space: nowrap;
+            }
+
+            .sidebar .nav-item i {
+                font-size: 18px;
             }
 
             .sidebar .more-btn {
                 margin: 0;
                 width: auto;
-                padding: 6px 12px;
-                border-radius: 16px;
+                padding: 5px 10px;
+                border-radius: 14px;
+                font-size: 12px;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .sidebar .more-btn i {
                 font-size: 14px;
             }
 
-            /* 主内容区适配 */
+            .main-content {
+                padding: 12px 8px;
+            }
+
             .top-search {
                 flex-direction: column;
-                gap: 16px;
-                margin-bottom: 20px;
+                gap: 12px;
+                padding: 8px 0;
+                margin-bottom: 16px;
             }
 
             .search-box {
                 max-width: 100%;
                 width: 100%;
+                height: 36px;
+            }
+
+            .search-box input {
+                font-size: 13px;
             }
 
             .top-nav {
-                align-self: flex-end;
+                display: none;
             }
 
-            /* 用户信息区适配 */
             .user-profile {
                 flex-direction: column;
-                gap: 20px;
+                gap: 16px;
+                padding: 0;
+                margin-bottom: 24px;
+            }
+
+            .avatar-wrapper {
+                align-self: center;
             }
 
             .user-avatar-big {
-                width: 80px;
-                height: 80px;
+                width: 70px;
+                height: 70px;
+            }
+
+            .user-info {
+                width: 100%;
             }
 
             .user-header {
                 flex-wrap: wrap;
+                gap: 12px;
+                align-items: center;
             }
 
-            /* 笔记网格适配 */
+            .username {
+                font-size: 20px;
+            }
+
+            .follow-btn {
+                width: 80px;
+                height: 32px;
+                font-size: 13px;
+                border-radius: 16px;
+            }
+
+            .user-meta {
+                font-size: 13px;
+            }
+
+            .user-signature {
+                font-size: 13px;
+                line-height: 1.5;
+            }
+
+            .user-stats {
+                gap: 16px;
+                font-size: 13px;
+            }
+
+            .note-tabs {
+                gap: 24px;
+                padding: 10px 0;
+            }
+
+            .note-tab {
+                font-size: 14px;
+                padding: 4px 12px;
+            }
+
             .notes-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
                 gap: 8px;
+                padding: 0;
+            }
+
+            .note-card .img-container {
+                margin-bottom: 6px;
+            }
+
+            .note-title {
+                font-size: 12px;
+            }
+
+            .note-meta {
+                font-size: 11px;
+            }
+
+            .note-author {
+                font-size: 11px;
             }
 
             /* 笔记弹窗适配 */
             .modal-content {
                 width: 95%;
                 height: 95vh;
+                border-radius: 12px;
+            }
+
+            .note-detail-modal .modal-body {
                 flex-direction: column;
             }
+
             .detail-note-left {
                 width: 100%;
-                height: 50%;
+                height: 45%;
+                min-height: 200px;
             }
+
             .detail-note-right {
                 width: 100%;
-                height: 50%;
-                padding: 16px;
-                padding-bottom: 80px;
-                overflow: hidden !important; /* 移动端同样强制隐藏父溢出 */
-            }  
+                height: 55%;
+                padding: 12px;
+                padding-bottom: 70px;
+            }
+
             .detail-comments-wrap {
                 flex: 1;
-                overflow-y: auto !important;
-                padding-bottom: 16px;
+                overflow-y: auto;
+                padding-right: 8px;
+                margin-bottom: 0;
             }
-            .detail-note-actions {
-                padding: 16px 16px;
-                position: absolute; /* 移动端保持绝对定位 */
-                bottom: 0;
-                left: 0;
-                right: 0;
-                width: 100%;
+
+            .detail-note-header {
+                margin-bottom: 12px;
             }
-            .note-detail-close {
-                width: 36px; /* 改回36px，和PC端一致 */
+
+            .detail-author-avatar {
+                width: 36px;
                 height: 36px;
-                font-size: 16px;
-                top: 16px;
-                right: 16px;
-                z-index: 999999;
-                /* 新增：扩大点击热区 */
-                padding: 4px;
-                box-sizing: content-box;
             }
+
+            .detail-author-name {
+                font-size: 14px;
+            }
+
+            .detail-follow-btn-small {
+                width: 55px;
+                height: 26px;
+                font-size: 12px;
+                border-radius: 13px;
+            }
+
+            .detail-note-title {
+                font-size: 16px;
+            }
+
+            .detail-note-desc {
+                font-size: 13px;
+                line-height: 1.5;
+            }
+
+            .detail-note-tags {
+                font-size: 13px;
+            }
+
+            .detail-note-actions {
+                padding: 0 12px;
+                height: 60px;
+            }
+
+            .detail-comment-input {
+                height: 34px;
+                font-size: 13px;
+                margin-bottom: 12px;
+            }
+
             .detail-action-icons {
-                gap: 16px;
+                gap: 12px;
+                font-size: 13px;
+            }
+
+            .note-detail-close {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+                top: 12px;
+                right: 12px;
             }
 
             /* 消息界面移动端适配 */
             .message-categories {
-                gap: 40px;
-                padding: 16px;
+                gap: 30px;
+                padding: 12px;
             }
+
             .message-category i {
-                font-size: 20px;
-                width: 40px;
-                height: 40px;
+                font-size: 18px;
+                width: 36px;
+                height: 36px;
             }
+
             .message-badge {
-                top: -3px;
-                right: -8px;
+                top: -2px;
+                right: -6px;
                 font-size: 10px;
-                padding: 1px 6px;
-                min-width: 16px;
+                padding: 1px 5px;
+                min-width: 14px;
             }
+
             .message-list {
-                padding: 16px;
+                padding: 12px;
             }
+
             .message-item {
-                gap: 12px;
-                padding: 12px 0;
+                gap: 10px;
+                padding: 10px 0;
             }
+
             .message-avatar {
-                width: 40px;
-                height: 40px;
+                width: 36px;
+                height: 36px;
             }
+
             .message-avatar i {
-                font-size: 20px;
+                font-size: 18px;
             }
+
             .message-bubble-text {
-                padding: 10px 14px;
+                padding: 8px 12px;
                 font-size: 13px;
             }
+
             .message-input-area {
-                padding: 12px 16px;
+                padding: 10px 12px;
+            }
+
+            /* 小屏手机（iPhone SE/安卓小屏） */
+            @media (max-width: 480px) {
+                .sidebar {
+                    padding: 8px 10px;
+                }
+
+                .sidebar .logo {
+                    width: 58px;
+                    height: 24px;
+                    border-radius: 12px;
+                    font-size: 12px;
+                }
+
+                .sidebar .nav-item span {
+                    display: none;
+                }
+
+                .sidebar .nav-item {
+                    padding: 6px;
+                }
+
+                .sidebar .nav-item i {
+                    font-size: 16px;
+                }
+
+                .sidebar .more-btn {
+                    padding: 4px 8px;
+                    font-size: 11px;
+                }
+
+                .notes-grid {
+                    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                    gap: 6px;
+                }
+
+                .note-title {
+                    font-size: 11px;
+                }
+
+                .user-avatar-big {
+                    width: 60px;
+                    height: 60px;
+                }
+
+                .username {
+                    font-size: 18px;
+                }
+
+                .user-signature {
+                    font-size: 12px;
+                }
+
+                .detail-note-left {
+                    height: 40%;
+                    min-height: 180px;
+                }
+
+                .detail-note-right {
+                    height: 60%;
+                    padding-bottom: 65px;
+                    padding: 10px;
+                }
+
+                .detail-note-actions {
+                    height: 55px;
+                }
+
+                .message-categories {
+                    gap: 20px;
+                }
+
+                .message-category i {
+                    font-size: 16px;
+                    width: 32px;
+                    height: 32px;
+                }
+            }
+
+            /* 超小屏（320px） */
+            @media (max-width: 320px) {
+                .notes-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 6px;
+                }
+
+                .note-title {
+                    font-size: 10px;
+                }
+
+                .user-stats {
+                    gap: 12px;
+                }
+
+                .detail-note-left {
+                    height: 35%;
+                    min-height: 160px;
+                }
+
+                .detail-note-right {
+                    height: 65%;
+                    padding: 8px;
+                    padding-bottom: 60px;
+                }
+
+                .detail-note-actions {
+                    height: 50px;
+                    padding: 0 8px;
+                }
             }
         }
     </style>
