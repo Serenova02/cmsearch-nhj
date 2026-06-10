@@ -1568,19 +1568,28 @@
 
         // 搜索框逻辑
         const searchInput = document.querySelector('.search-box input');
-        searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const searchText = searchInput.value.trim();
-                if (searchText === '柰花集') {
-                    window.location.href = 'ssredbook-lin.html';
-                } else if (searchText === '周哥副业实战') {
-                    // 匹配关键词，跳转至对应的页面
-                    window.location.href = 'ssredbook-zhou.html';
-                } else {
-                    alert('搜索不到该账号相关信息');
-                    searchInput.value = '';
-                }
+        
+        function handleSearch() {
+            const searchText = searchInput.value.trim();
+            if (searchText === '柰花集') {
+                window.location.href = 'ssredbook-lin.html';
+            } else if (searchText === '周哥副业实战') {
+                window.location.href = 'ssredbook-zhou.html';
+            } else {
+                alert('搜索不到该账号相关信息');
+                searchInput.value = '';
             }
+        }
+        
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.keyCode === 13 || e.which === 13) {
+                e.preventDefault();
+                handleSearch();
+            }
+        });
+        
+        searchInput.addEventListener('search', () => {
+            handleSearch();
         });
 
         // 标签切换逻辑 
