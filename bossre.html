@@ -33,8 +33,37 @@
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
+        .back-btn i {
+            font-size: 14px;
+        }
+
+        .header-info {
+            flex: 1;
         }
         
         .header h1 {
@@ -329,17 +358,40 @@
             }
 
             .header-content {
-                flex-direction: column;
-                gap: 8px;
-                align-items: flex-start;
+                flex-direction: row;
+                gap: 12px;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .back-btn {
+                padding: 6px 12px;
+                font-size: 13px;
+                border-radius: 16px;
+            }
+
+            .back-btn i {
+                font-size: 13px;
+            }
+
+            .back-btn span {
+                display: inline-block;
+            }
+
+            .header-info {
+                flex: 1;
+                min-width: 0;
             }
 
             .header h1 {
-                font-size: 18px;
+                font-size: 16px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             .header .salary {
-                font-size: 22px;
+                font-size: 20px;
             }
 
             .container {
@@ -416,12 +468,25 @@
         }
 
         @media (max-width: 480px) {
+            .back-btn {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+
+            .back-btn span {
+                display: none;
+            }
+
+            .back-btn i {
+                font-size: 14px;
+            }
+
             .header h1 {
-                font-size: 16px;
+                font-size: 15px;
             }
 
             .header .salary {
-                font-size: 20px;
+                font-size: 18px;
             }
 
             .main-content {
@@ -522,8 +587,14 @@
 <body>
     <div class="header">
         <div class="header-content">
-            <h1>店铺孵化专员 / 供应链对接（无经验可投）</h1>
-            <div class="salary">6000-10000 元 / 月</div>
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+                <span>返回</span>
+            </button>
+            <div class="header-info">
+                <h1>店铺孵化专员 / 供应链对接（无经验可投）</h1>
+                <div class="salary">6000-10000 元 / 月</div>
+            </div>
         </div>
     </div>
     
@@ -651,5 +722,11 @@
     <div class="footer">
         <p>温馨提示：求职过程中请勿提前缴纳费用、提供敏感隐私信息，如发现违规行为请立即举报。</p>
     </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'internet.html';
+        }
+    </script>
 </body>
 </html>
