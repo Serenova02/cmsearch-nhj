@@ -2,8 +2,9 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>万和寺</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -22,6 +23,36 @@
             max-width: 680px;
             margin: 0 auto;
             padding: 20px 15px;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 14px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            color: #333;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+        }
+
+        .back-btn:hover {
+            background: #fff;
+            border-color: #ccc;
+            transform: translateX(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .back-btn i {
+            font-size: 14px;
         }
         
         .article-header {
@@ -207,6 +238,27 @@
             }
             .divider-10 {
                 margin: 30px 0; /* 大屏使用固定间距，更协调 */
+            }
+            
+            .back-btn {
+                padding: 6px 12px;
+                font-size: 13px;
+                top: 15px;
+                left: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .back-btn span {
+                display: none;
+            }
+            
+            .back-btn {
+                width: 36px;
+                height: 36px;
+                padding: 0;
+                border-radius: 50%;
+                justify-content: center;
             }
         }
         
@@ -643,6 +695,11 @@
 </head>
 <body>
     <div class="container">
+        <!-- 返回按钮 -->
+        <button class="back-btn" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+            <span>返回</span>
+        </button>
         <div class="article-header">
             <h1 class="article-title">火遍青溪！本地人私藏的祈福宝地！超灵的！！</h1>
             <div class="article-meta">
@@ -1015,7 +1072,10 @@
     </div>
     
     <script>
-        // 在线祈福弹窗功能
+        function goBack() {
+            window.location.href = 'internet.html';
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // 获取DOM元素
             const modalOverlay = document.getElementById('prayerModal');
