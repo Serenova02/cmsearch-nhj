@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>同城生活网</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -25,6 +25,41 @@
             padding: 14px 20px;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            background: #007bff;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .back-btn:hover {
+            background: #0056b3;
+            transform: translateX(-3px);
+        }
+
+        .back-btn i {
+            font-size: 14px;
+        }
+
+        .header-info {
+            flex: 1;
+            text-align: center;
         }
         
         .header h2 {
@@ -203,6 +238,29 @@
         
         /* 响应式设计 */
         @media (max-width: 768px) {
+            html, body {
+                width: 100%;
+                overflow-x: hidden;
+            }
+
+            .header {
+                padding: 12px;
+            }
+
+            .header-content {
+                gap: 10px;
+            }
+
+            .back-btn {
+                padding: 6px 12px;
+                font-size: 13px;
+                border-radius: 16px;
+            }
+
+            .back-btn i {
+                font-size: 13px;
+            }
+
             .search-input {
                 width: 60%;
             }
@@ -213,16 +271,29 @@
                 font-size: 14px;
             }
             
-            .header h2 {
+            .header-info h2 {
                 font-size: 18px;
             }
             
-            .header p {
+            .header-info p {
                 font-size: 12px;
             }
         }
         
         @media (max-width: 480px) {
+            .back-btn {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+
+            .back-btn span {
+                display: none;
+            }
+
+            .back-btn i {
+                font-size: 14px;
+            }
+
             .search-input {
                 width: 50%;
             }
@@ -237,14 +308,30 @@
                 margin: 0 4px;
                 font-size: 13px;
             }
+
+            .header-info h2 {
+                font-size: 16px;
+            }
+
+            .header-info p {
+                font-size: 11px;
+            }
         }
     </style>
 </head>
 <body>
     <!-- 顶部Header -->
     <div class="header">
-        <h2>🏠同城生活网</h2>
-        <p>青溪人自己的二手·回收·便民平台</p>
+        <div class="header-content">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+                <span>返回</span>
+            </button>
+            <div class="header-info">
+                <h2>🏠同城生活网</h2>
+                <p>青溪人自己的二手·回收·便民平台</p>
+            </div>
+        </div>
     </div>
     
     <!-- 导航Nav -->
@@ -330,5 +417,10 @@
         <p>©2019-2026 青溪市同城生活网</p>
     </div>
     
+    <script>
+        function goBack() {
+            window.location.href = 'internet.html';
+        }
+    </script>
 </body>
 </html>
