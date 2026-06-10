@@ -40,6 +40,31 @@
             font-weight: bold;
             color: #1a73e8;
         }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            background: #1a73e8;
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .back-btn:hover {
+            background: #1557b0;
+            transform: translateX(-3px);
+        }
+
+        .back-btn i {
+            font-size: 14px;
+        }
         
         .nav {
             display: flex;
@@ -239,6 +264,28 @@
         }
         
         @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .back-btn {
+                padding: 5px 10px;
+                font-size: 13px;
+                border-radius: 14px;
+                margin-right: 10px;
+            }
+
+            .back-btn i {
+                font-size: 13px;
+            }
+
+            .nav {
+                order: 2;
+                width: 100%;
+                justify-content: center;
+            }
+            
             .container {
                 flex-direction: column;
             }
@@ -251,11 +298,34 @@
                 width: 100px;
             }
         }
+
+        @media (max-width: 480px) {
+            .back-btn {
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+
+            .back-btn span {
+                display: none;
+            }
+
+            .back-btn i {
+                font-size: 14px;
+            }
+
+            .logo {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-content">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+                <span>返回</span>
+            </button>
             <div class="logo">百度百科</div>
             <div class="nav">
                 <a href="#">首页</a>
@@ -561,6 +631,10 @@
         </div>
     </div>
     <script>
+        function goBack() {
+            window.location.href = 'internet.html';
+        }
+
         // 平滑滚动功能
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
