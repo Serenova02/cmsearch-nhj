@@ -46,6 +46,31 @@
             font-weight: bold;
             margin-right: 30px;
         }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            background: #ff6600;
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .back-btn:hover {
+            background: #e55a00;
+            transform: translateX(-3px);
+        }
+
+        .back-btn i {
+            font-size: 14px;
+        }
         
         .nav-links {
             display: flex;
@@ -593,6 +618,17 @@
             .nav-links {
                 display: none;
             }
+
+            .back-btn {
+                padding: 5px 10px;
+                font-size: 13px;
+                border-radius: 14px;
+                margin-right: 10px;
+            }
+
+            .back-btn i {
+                font-size: 13px;
+            }
             
             .search-input {
                 width: 150px;
@@ -610,12 +646,35 @@
                 padding: 8px;
             }
         }
+
+        @media (max-width: 480px) {
+            .back-btn {
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+
+            .back-btn span {
+                display: none;
+            }
+
+            .back-btn i {
+                font-size: 14px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="nav">
             <div class="nav-left">
+                <button class="back-btn" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>返回</span>
+                </button>
                 <div class="logo">企查查</div>
                 <ul class="nav-links">
                     <li><a href="#">首页</a></li>
@@ -964,5 +1023,11 @@
             <p>©2014-2026 企查查版权所有  江ICP备01200123号</p>
         </div>
     </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'internet.html';
+        }
+    </script>
 </body>
 </html>
