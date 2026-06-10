@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>搜索</title>
     <style>
         * {
@@ -22,6 +22,37 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 40px 20px;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #6B6B6B;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .back-btn:hover {
+            background: #5A5A5A;
+            transform: translateX(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .back-btn i {
+            font-size: 14px;
         }
         
         .version-tabs {
@@ -152,8 +183,27 @@
         
         /* 移动端适配 */
         @media (max-width: 768px) {
+            html, body {
+                width: 100%;
+                overflow-x: hidden;
+            }
+
             .container {
-                padding: 20px 16px;
+                padding: 20px 12px;
+            }
+
+            .header-section {
+                margin-bottom: 15px;
+            }
+
+            .back-btn {
+                padding: 6px 12px;
+                font-size: 13px;
+                border-radius: 16px;
+            }
+
+            .back-btn i {
+                font-size: 13px;
             }
             
             .version-tabs {
@@ -208,6 +258,22 @@
             }
         }
         
+        /* 小屏手机适配 */
+        @media (max-width: 480px) {
+            .back-btn {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+
+            .back-btn span {
+                display: none;
+            }
+
+            .back-btn i {
+                font-size: 14px;
+            }
+        }
+
         /* 平板适配 */
         @media (min-width: 769px) and (max-width: 1024px) {
             .hot-topics-list {
@@ -397,8 +463,14 @@
 </head>
 <body>
     <div class="container">
+        <!-- 返回按钮 -->
+        <div class="header-section">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+                <span>返回桌面</span>
+            </button>
+        </div>
 
-        
         <div class="search-container">
             <div class="search-box">
                 <input type="text" id="search-input">
@@ -530,6 +602,10 @@
     </div>
     
     <script>
+        function goBack() {
+            window.location.href = 'desktop.html';
+        }
+
         // 初始化元素
         const searchInput = document.getElementById('search-input');
         const searchButton = document.getElementById('search-button');
