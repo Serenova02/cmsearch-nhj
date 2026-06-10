@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>网络违法犯罪举报</title>
     <style>
         * {
@@ -35,7 +35,33 @@
             margin: 0 auto;
             display: flex;
             justify-content: center;
-            padding: 10px 0;
+            align-items: center;
+            padding: 10px 20px;
+            gap: 10px;
+        }
+        
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .back-btn:hover {
+            background: #444;
+            border-color: #666;
+        }
+        
+        .back-btn i {
+            font-size: 13px;
         }
         
         .navbar-item {
@@ -406,12 +432,26 @@
         
         /* 响应式设计 */
         @media (max-width: 768px) {
+            html, body {
+                width: 100%;
+                overflow-x: hidden;
+            }
+            
             .navbar-container {
                 flex-wrap: wrap;
+                justify-content: flex-start;
+                padding: 10px 12px;
+            }
+            
+            .back-btn {
+                padding: 5px 10px;
+                font-size: 12px;
+                border-radius: 14px;
             }
             
             .navbar-item {
                 margin: 5px 10px;
+                font-size: 13px;
             }
             
             .container {
@@ -464,6 +504,21 @@
             
             .ending-content {
                 width: 95%;
+            }
+
+            @media (max-width: 480px) {
+                .back-btn span {
+                    display: none;
+                }
+                
+                .back-btn i {
+                    font-size: 14px;
+                }
+                
+                .navbar-item {
+                    margin: 4px 8px;
+                    font-size: 12px;
+                }
                 padding: 30px 25px 25px;
             }
             
@@ -491,6 +546,10 @@
     <!-- 导航栏 -->
     <div class="navbar">
         <div class="navbar-container">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+                <span>返回</span>
+            </button>
             <div class="navbar-item">首页</div>
             <div class="navbar-item">警务公开</div>
             <div class="navbar-item">反诈宣传</div>
@@ -610,6 +669,10 @@
     </div>
     
     <script>
+        function goBack() {
+            window.location.href = 'internet.html';
+        }
+
         // 初始化变量
         let errorCount = 0;
         const maxErrorCount = 3;
