@@ -28,6 +28,37 @@
             gap: 20px;
         }
 
+        /* 返回按钮 */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a9b);
+            border: none;
+            border-radius: 22px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+            z-index: 9999;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #e55a5a, #d94a8a);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+        }
+
+        .back-btn i {
+            font-size: 14px;
+        }
+
         /* 左侧侧边栏（完全复用redbook.html） */
         .sidebar {
             display: flex;
@@ -828,6 +859,18 @@
                 overflow-x: hidden;
             }
 
+            .back-btn {
+                padding: 8px 14px;
+                font-size: 13px;
+                border-radius: 18px;
+                top: 15px;
+                left: 15px;
+            }
+
+            .back-btn i {
+                font-size: 13px;
+            }
+
             .container {
                 flex-direction: column;
                 padding: 0;
@@ -1161,6 +1204,22 @@
 
         /* 小屏手机适配 */
         @media (max-width: 480px) {
+            .back-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+                border-radius: 16px;
+                top: 12px;
+                left: 12px;
+            }
+
+            .back-btn span {
+                display: none;
+            }
+
+            .back-btn i {
+                font-size: 14px;
+            }
+
             .sidebar {
                 padding: 8px 10px;
             }
@@ -1239,6 +1298,11 @@
 </head>
 <body>
     <div class="container">
+        <!-- 返回按钮 -->
+        <button class="back-btn" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+            <span>返回桌面</span>
+        </button>
         <!-- 左侧侧边栏（复用redbook.html） -->
         <div class="sidebar">
             <div class="logo">小红书</div>
@@ -1498,6 +1562,10 @@
     </div>
 
     <script>
+        function goBack() {
+            window.location.href = 'desktop.html';
+        }
+
         // 搜索框逻辑
         const searchInput = document.querySelector('.search-box input');
         searchInput.addEventListener('keydown', (e) => {
