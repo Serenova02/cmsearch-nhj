@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>小易云盘</title>
     <style>
         * {
@@ -320,34 +320,181 @@
         
         /* 响应式设计 */
         @media (max-width: 768px) {
+            html, body {
+                width: 100%;
+                overflow-x: hidden;
+            }
+
             .container {
                 padding: 20px;
-                margin: 20px;
+                margin: 15px;
+                max-width: 100%;
+                width: calc(100% - 30px);
+            }
+            
+            h1 {
+                font-size: 22px;
+                margin-bottom: 25px;
             }
             
             .form-group {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: stretch;
+                margin-bottom: 18px;
             }
             
             .form-label {
                 width: 100%;
-                margin-bottom: 5px;
+                margin-bottom: 8px;
+                font-size: 15px;
             }
             
             .form-input {
-                width: 100%;
+                width: 100% !important;
+                flex: none !important;
+                height: 44px;
+                font-size: 15px;
+                padding: 0 12px;
             }
             
+            .button-container {
+                margin-top: 25px;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 200px;
+                height: 44px;
+                font-size: 16px;
+            }
+            
+            .error-message {
+                font-size: 13px;
+            }
+
+            /* 弹窗适配 */
             .modal-content {
-                max-width: 90%;
-                max-height: 90%;
+                width: 95% !important;
+                max-width: 95% !important;
+                max-height: 90vh;
+                height: auto !important;
                 padding: 20px;
+                border-radius: 8px;
+            }
+            
+            .modal-header {
+                margin-bottom: 15px;
+            }
+            
+            .modal-title {
+                font-size: 18px;
             }
             
             .folder-content {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-                gap: 15px;
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 12px;
+            }
+            
+            .file-item {
+                padding: 12px;
+            }
+            
+            .file-icon {
+                font-size: 40px;
+            }
+            
+            .file-name {
+                font-size: 12px;
+            }
+
+            /* Toast适配 */
+            .toast {
+                min-width: 260px;
+                padding: 24px;
+            }
+            
+            .toast-icon {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 15px;
+            }
+            
+            .toast-icon i {
+                font-size: 26px;
+            }
+            
+            .toast-title {
+                font-size: 16px;
+            }
+            
+            .toast-message {
+                font-size: 13px;
+            }
+
+            /* 代码执行弹窗适配 */
+            .code-modal {
+                padding: 20px;
+                font-size: 14px;
+            }
+            
+            .code-input {
+                font-size: 14px;
+            }
+        }
+
+        /* 小屏手机适配 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px;
+                margin: 10px;
+                width: calc(100% - 20px);
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .form-input {
+                height: 42px;
+                font-size: 14px;
+            }
+            
+            .btn {
+                height: 42px;
+                font-size: 15px;
+            }
+            
+            .folder-content {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            
+            .file-item {
+                padding: 10px;
+            }
+            
+            .file-icon {
+                font-size: 36px;
+            }
+            
+            .file-name {
+                font-size: 11px;
+            }
+            
+            .toast {
+                min-width: 220px;
+                padding: 20px;
+            }
+        }
+
+        /* 超小屏适配 */
+        @media (max-width: 320px) {
+            .folder-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .file-icon {
+                font-size: 32px;
             }
         }
     </style>
